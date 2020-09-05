@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
     <title>Welcome to Noodle</title>
+    <meta name="description" content="Search the web for sites and images.">
+    <meta name="keywords" content="Search engine, doodle, websites">
+    <meta name="description" content="shotaro matsuya">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -10,7 +15,7 @@
     <div class="mainSection">
         <div class="logoContainer">
 
-            <img src="assets/images/festisite_google.png">
+            <img src="assets/images/festisite_google.png" title="Logo of our site" alt="Site logo">
         </div>
         <div class="searchContainer">
             <form action="search.php" method="GET">
