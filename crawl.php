@@ -75,8 +75,8 @@ function createLink($src, $url) {
 	return $src;
 }
 
-function getDetails($url) {
-    global $alreadyFoundImages;
+function getDetails($url) { /* get title,meta,img element  */ 
+	global $alreadyFoundImages;
 
 	$parser = new DomDocumentParser($url);
 
@@ -140,7 +140,7 @@ function getDetails($url) {
 
 }
 
-function followLinks($url) {
+function followLinks($url) { /* get anchor element */
 
 	global $alreadyCrawled;
 	global $crawling;
@@ -149,7 +149,7 @@ function followLinks($url) {
 
 	$linkList = $parser->getLinks();  /* NodeListはforeachで回せる */
 
-	foreach($linkList as $link) {
+	foreach($linkList as $link) { /* 1〜2階層目のanchor tagの取得 */
 		$href = $link->getAttribute("href");
 
 		if(strpos($href, "#") !== false) {  /* #が含まれているかどうか */
@@ -160,7 +160,7 @@ function followLinks($url) {
 		}
 
 
-		$href = createLink($href, $url);
+		$href = createLink($href, $url); /*absolute path*/
 
 
 		if(!in_array($href, $alreadyCrawled)) {
@@ -171,14 +171,14 @@ function followLinks($url) {
 		}
 	}
 
-	array_shift($crawling);
+	array_shift($crawling); /* 取得し終えたurl */
 
 	foreach($crawling as $site) {
-		followLinks($site);
+		followLinks($site);  /* 2階層目のanchor tagの取得start */
 	}
 
 }
 
-$startUrl = "http://www.bbc.com";
+$startUrl = "http://www.apple.com/";
 followLinks($startUrl);
 ?>
