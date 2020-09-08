@@ -2,13 +2,13 @@
 include("config.php");
 include("classes/SiteResultsProvider.php");
 
-    if(isset($_GET["term"])){
-        $term = $_GET["term"];
-
-    }else{
-        exit("you must entr a search term");
-    }
-    $type = isset($_GET["type"]) ? $_GET["type"] : "Sites";
+if (isset($_GET["term"])) {
+    $term = $_GET["term"];
+} else {
+    exit("you must entr a search term");
+}
+$type = isset($_GET["type"]) ? $_GET["type"] : "Sites";
+$page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
 ?>
 
@@ -43,10 +43,10 @@ include("classes/SiteResultsProvider.php");
             <div class="tabsContainer">
                 <ul class="tabList">
                     <li class="<? echo $type == 'sites' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=sites" ; ?>'>Sites</a>
+                        <a href='<?php echo "search.php?term=$term&type=sites"; ?>'>Sites</a>
                     </li>
                     <li class="<? echo $type == 'images' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=images" ; ?>'>Images</a>
+                        <a href='<?php echo "search.php?term=$term&type=images"; ?>'>Images</a>
                     </li>
                 </ul>
 
@@ -58,14 +58,68 @@ include("classes/SiteResultsProvider.php");
 
         <div class="mainResultsSection">
             <?php
-                $resultsProvider = new SiteResultsProviders($con);
+            $resultsProvider = new SiteResultsProviders($con);
+            $pageSize = 20;
 
-                $numResults = $resultsProvider->getNumResults($term);
+            $numResults = $resultsProvider->getNumResults($term);
 
-                echo "<p class='resultsCount'>$numResults results found</p>";
+            echo "<p class='resultsCount'>$numResults results found</p>";
 
-                echo $resultsProvider->getResultshtml(1,20,$term);
+            echo $resultsProvider->getResultshtml($page, $pageSize, $term);
             ?>
+
+        </div>
+        <div class="paginationContainer">
+            <div class="pageButtons">
+                <div class="pageNumberContainer">
+                    <img src="assets/images/pageStart.png">
+                </div>
+                <?php
+                $pagesToShow = 10; /* oの表示数のmax */
+                $numPages = ceil($numResults / $pageSize); /*小数点切り上げ 総ページ数*/
+                $pageLeft = min($pagesToShow, $numPages); /*min関数は最小値の方を返す ループで回すoの数*/
+
+                // ループ開始地点の設定
+                $currentPage = $page - floor($pagesToShow / 2); /*小数点切り下げ 　ループ開始地点*/
+                if ($currentPage < 1) {  /*ページ数が5より少ないときのループ開始地点は1から */
+                    $currentPage = 1;
+                }
+                if ($currentPage + $pageLeft > $numPages) {  /* ページmax付近でのループ開始地点 */
+                    $currentPage = $numPages - $pageLeft;
+                }
+
+                while ($pageLeft != 0 && $currentPage <= $numPages) { /*currnetPageを増やし、pageLeftをへらす */
+                    if ($currentPage == $page) {
+                        echo "<div class='pageNumberContainer'>
+                                <img src='assets/images/pageSelected.png'>
+                                <span class='pageNumber'>$currentPage</span>
+    
+                            </div>";
+                    } else {
+                        echo "<div class='pageNumberContainer'>
+                                <a href='search.php?term=$term&type=$type&page=$currentPage'>
+                                    <img src='assets/images/page.png'>
+                                    <span class='pageNumber'>$currentPage</span>
+                                </a>
+                            </div>";
+                    }
+                    $currentPage++;
+                    $pageLeft--;
+                }
+
+
+                ?>
+
+
+
+
+                <div class="pageNumberContainer">
+                    <img src="assets/images/pageEnd.png">
+                </div>
+
+
+            </div>
+
 
         </div>
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <title>Welcome to Noodle</title>
     <meta name="description" content="Search the web for sites and images.">
@@ -10,22 +11,23 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
-   <div class="wrapper indexPage">
-    <div class="mainSection">
-        <div class="logoContainer">
+    <div class="wrapper indexPage">
+        <div class="mainSection">
+            <div class="logoContainer">
 
-            <img src="assets/images/festisite_google.png" title="Logo of our site" alt="Site logo">
-        </div>
-        <div class="searchContainer">
-            <form action="search.php" method="GET">
-                <input class="searchBox" type="text" name="term">
-                <input class="searchButton" type="submit" value="Search">
-            </form>
+                <img src="assets/images/festisite_google.png" title="Logo of our site" alt="Site logo">
+            </div>
+            <div class="searchContainer">
+                <form action="search.php" method="GET">
+                    <input class="searchBox" type="text" name="term">
+                    <input class="searchButton" type="submit" value="Search">
+                </form>
 
-        </div>
+            </div>
         </div>
     </div>
-        </body>
+</body>
 
-        </html>
+</html>

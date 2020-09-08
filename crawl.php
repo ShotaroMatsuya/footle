@@ -5,7 +5,8 @@ include("classes/DomDocumentParser.php");
 $alreadyCrawled = array();
 $crawling = array();
 $alreadyFoundImages = array();
-function insertImage($url, $src, $alt, $title) {
+function insertImage($url, $src, $alt, $title)
+{
 	global $con;
 
 	$query = $con->prepare("INSERT INTO images(siteUrl, imageUrl, alt, title)
@@ -19,17 +20,19 @@ function insertImage($url, $src, $alt, $title) {
 	$query->execute();
 }
 
-function linkExists($url) {
+function linkExists($url)
+{
 	global $con;
 
 	$query = $con->prepare("SELECT * FROM sites WHERE url = :url");
 
-    $query->bindParam(":url", $url);
-    $query->execute();
+	$query->bindParam(":url", $url);
+	$query->execute();
 	return $query->rowCount() != 0;
 }
 
-function insertLink($url, $title, $description, $keywords) {
+function insertLink($url, $title, $description, $keywords)
+{
 	global $con;
 
 	$query = $con->prepare("INSERT INTO sites(url, title, description, keywords)
@@ -51,38 +54,36 @@ function insertLink($url, $title, $description, $keywords) {
 5,  about/aboutUs.php ->[scheme] + // + [host] + / + about/aboutUs.php
 */
 
-function createLink($src, $url) {
+function createLink($src, $url)
+{
 
 	$scheme = parse_url($url)["scheme"]; // http
 	$host = parse_url($url)["host"]; // www.reecekenney.com
-	
-	if(substr($src, 0, 2) == "//") {
+
+	if (substr($src, 0, 2) == "//") {
 		$src =  $scheme . ":" . $src;
-	}
-	else if(substr($src, 0, 1) == "/") {
+	} else if (substr($src, 0, 1) == "/") {
 		$src = $scheme . "://" . $host . $src;
-	}
-	else if(substr($src, 0, 2) == "./") {
+	} else if (substr($src, 0, 2) == "./") {
 		$src = $scheme . "://" . $host . dirname(parse_url($url)["path"]) . substr($src, 1);
-	}
-	else if(substr($src, 0, 3) == "../") {
+	} else if (substr($src, 0, 3) == "../") {
 		$src = $scheme . "://" . $host . "/" . $src;
-	}
-	else if(substr($src, 0, 5) != "https" && substr($src, 0, 4) != "http") {
+	} else if (substr($src, 0, 5) != "https" && substr($src, 0, 4) != "http") {
 		$src = $scheme . "://" . $host . "/" . $src;
 	}
 
 	return $src;
 }
 
-function getDetails($url) { /* get title,meta,img element  */ 
+function getDetails($url)
+{ /* get title,meta,img element  */
 	global $alreadyFoundImages;
 
 	$parser = new DomDocumentParser($url);
 
 	$titleArray = $parser->getTitleTags(); //NodeList
 
-	if(sizeof($titleArray) == 0 || $titleArray->item(0) == NULL) {
+	if (sizeof($titleArray) == 0 || $titleArray->item(0) == NULL) {
 		return;
 	}
 
@@ -90,7 +91,7 @@ function getDetails($url) { /* get title,meta,img element  */
 	$title = str_replace("\n", "", $title);   //改行を空文字に
 
 
-	if($title == "") {
+	if ($title == "") {
 		return;
 	}
 
@@ -99,13 +100,13 @@ function getDetails($url) { /* get title,meta,img element  */
 
 	$metasArray = $parser->getMetatags(); //NodeList
 
-	foreach($metasArray as $meta) {
+	foreach ($metasArray as $meta) {
 
-		if($meta->getAttribute("name") == "description") {
+		if ($meta->getAttribute("name") == "description") {
 			$description = $meta->getAttribute("content");
 		}
 
-		if($meta->getAttribute("name") == "keywords") {
+		if ($meta->getAttribute("name") == "keywords") {
 			$keywords = $meta->getAttribute("content");
 		}
 	}
@@ -113,34 +114,33 @@ function getDetails($url) { /* get title,meta,img element  */
 	$description = str_replace("\n", "", $description);
 	$keywords = str_replace("\n", "", $keywords);
 
-    if(linkExists($url)){
-        echo "$url already exists<br>";
-    } else if (	insertLink($url, $title, $description, $keywords)){
-        echo "SUCCESS : $url<br>";
-    }else{
-        echo "ERROR: Failed to insert $url<br>";
-    }
-    $imageArray = $parser->getImages(); //NodeList
-    foreach($imageArray as $image){
-        $src = $image->getAttribute("src");
-        $alt = $image->getAttribute("alt");
-        $title = $image->getAttribute("title");
+	if (linkExists($url)) {
+		echo "$url already exists<br>";
+	} else if (insertLink($url, $title, $description, $keywords)) {
+		echo "SUCCESS : $url<br>";
+	} else {
+		echo "ERROR: Failed to insert $url<br>";
+	}
+	$imageArray = $parser->getImages(); //NodeList
+	foreach ($imageArray as $image) {
+		$src = $image->getAttribute("src");
+		$alt = $image->getAttribute("alt");
+		$title = $image->getAttribute("title");
 
-        if(!$title && !$alt){
-            continue;
-        }
-        $src = createLink($src,$url); //absolute pathを取得
-        if(!in_array($src, $alreadyFoundImages)){
-            $alreadyFoundImages[] = $src;
-            //Insert the image
-            insertImage($url,$src,$alt,$title);
-        }
-
-    }
-
+		if (!$title && !$alt) {
+			continue;
+		}
+		$src = createLink($src, $url); //absolute pathを取得
+		if (!in_array($src, $alreadyFoundImages)) {
+			$alreadyFoundImages[] = $src;
+			//Insert the image
+			insertImage($url, $src, $alt, $title);
+		}
+	}
 }
 
-function followLinks($url) { /* get anchor element */
+function followLinks($url)
+{ /* get anchor element */
 
 	global $alreadyCrawled;
 	global $crawling;
@@ -149,13 +149,12 @@ function followLinks($url) { /* get anchor element */
 
 	$linkList = $parser->getLinks();  /* NodeListはforeachで回せる */
 
-	foreach($linkList as $link) { /* 1〜2階層目のanchor tagの取得 */
+	foreach ($linkList as $link) { /* 1〜2階層目のanchor tagの取得 */
 		$href = $link->getAttribute("href");
 
-		if(strpos($href, "#") !== false) {  /* #が含まれているかどうか */
+		if (strpos($href, "#") !== false) {  /* #が含まれているかどうか */
 			continue;
-		}
-		else if(substr($href, 0, 11) == "javascript:") {  /*jsで生成されたlinkかどうか*/
+		} else if (substr($href, 0, 11) == "javascript:") {  /*jsで生成されたlinkかどうか*/
 			continue;
 		}
 
@@ -163,7 +162,7 @@ function followLinks($url) { /* get anchor element */
 		$href = createLink($href, $url); /*absolute path*/
 
 
-		if(!in_array($href, $alreadyCrawled)) {
+		if (!in_array($href, $alreadyCrawled)) {
 			$alreadyCrawled[] = $href;
 			$crawling[] = $href;
 			// Insert $href
@@ -173,12 +172,10 @@ function followLinks($url) { /* get anchor element */
 
 	array_shift($crawling); /* 取得し終えたurl */
 
-	foreach($crawling as $site) {
+	foreach ($crawling as $site) {
 		followLinks($site);  /* 2階層目のanchor tagの取得start */
 	}
-
 }
 
 $startUrl = "http://www.apple.com/";
 followLinks($startUrl);
-?>
