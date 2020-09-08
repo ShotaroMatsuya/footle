@@ -77,18 +77,18 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                 <?php
                 $pagesToShow = 10; /* oの表示数のmax */
                 $numPages = ceil($numResults / $pageSize); /*小数点切り上げ 総ページ数*/
-                $pageLeft = min($pagesToShow, $numPages); /*min関数は最小値の方を返す ループで回すoの数*/
+                $pagesLeft = min($pagesToShow, $numPages); /*min関数は最小値の方を返す ループで回すoの数*/
 
                 // ループ開始地点の設定
                 $currentPage = $page - floor($pagesToShow / 2); /*小数点切り下げ 　ループ開始地点*/
                 if ($currentPage < 1) {  /*ページ数が5より少ないときのループ開始地点は1から */
                     $currentPage = 1;
                 }
-                if ($currentPage + $pageLeft > $numPages) {  /* ページmax付近でのループ開始地点 */
-                    $currentPage = $numPages - $pageLeft;
+                if ($currentPage + $pagesLeft > $numPages + 1) {  /* ページmax付近でのループ開始地点 */
+                    $currentPage = $numPages + 1 - $pagesLeft;
                 }
 
-                while ($pageLeft != 0 && $currentPage <= $numPages) { /*currnetPageを増やし、pageLeftをへらす */
+                while ($pagesLeft != 0 && $currentPage <= $numPages) { /*currnetPageを増やし、pagesLeftをへらす */
                     if ($currentPage == $page) {
                         echo "<div class='pageNumberContainer'>
                                 <img src='assets/images/pageSelected.png'>
@@ -104,7 +104,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                             </div>";
                     }
                     $currentPage++;
-                    $pageLeft--;
+                    $pagesLeft--;
                 }
 
 
