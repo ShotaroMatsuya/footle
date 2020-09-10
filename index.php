@@ -2,7 +2,7 @@
 <html lang="ja">
 
 <head>
-    <title>Welcome to Noodle</title>
+    <title>Welcome to Doodle</title>
     <meta name="description" content="Search the web for sites and images.">
     <meta name="keywords" content="Search engine, doodle, websites">
     <meta name="description" content="shotaro matsuya">

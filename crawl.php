@@ -177,5 +177,5 @@ function followLinks($url)
 	}
 }
 
-$startUrl = "http://www.apple.com/";
+$startUrl = "https://onefootball.com/";
 followLinks($startUrl);
