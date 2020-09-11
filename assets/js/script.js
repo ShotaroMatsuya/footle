@@ -1,3 +1,5 @@
+var timer;
+
 $(document).ready(function () {
   $(".result").on("click", function () {
     var id = $(this).attr("data-linkId");
@@ -10,7 +12,39 @@ $(document).ready(function () {
 
     return false;
   });
+  var grid = $(".imageResults");
+
+  grid.on("layoutComplete", function () {
+    //layoutCompleteはすべて計算し終えたときに実行されるイベントリスナー
+    $(".gridItem img").css("visibility", "visible");
+    console.log("done!");
+  });
+  grid.masonry({
+    itemSelector: ".gridItem",
+    columnWidth: 200,
+    gutter: 5, //border space
+    // transitionDuration:'0.8s'; // window幅を変えたときの移動時間
+    isInitLayout: false, //load時にmasonryLayoutを無効化->jsで読み込ませる
+  });
 });
+function loadImage(src, className) {
+  var image = $("<img>");
+  image.on("load", function () {
+    //srcが存在した場合
+    $("." + className + " a").append(image);
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      //whileループでmasonryメソッドが30回も呼び出されるのでsetTimeoutでDOMの表示が終わってから一回だけ呼び出されるようにする
+      $(".imageResults").masonry();
+    }, 500);
+  });
+  image.on("error", function () {
+    //srcが存在せず画像が表示されなかった場合
+    $("." + className).remove();
+    $.post("ajax/setBroken.php", { src: src }); //DBでの処理
+  });
+  image.attr("src", src);
+}
 
 function increaseLinkClicks(linkId, url) {
   $.post("ajax/updateLinkCount.php", { linkId: linkId }).done(function (

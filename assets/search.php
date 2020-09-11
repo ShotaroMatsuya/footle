@@ -6,7 +6,7 @@ include("classes/ImageResultsProvider.php");
 if (isset($_GET["term"])) {
     $term = $_GET["term"];
 } else {
-    exit("you must enter a search term");
+    exit("you must entr a search term");
 }
 $type = isset($_GET["type"]) ? $_GET["type"] : "Sites";
 $page = isset($_GET["page"]) ? $_GET["page"] : 1;
@@ -96,7 +96,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                     $currentPage = $numPages + 1 - $pagesLeft;
                 }
 
-                while ($pagesLeft != 0 && $currentPage <= $numPages) { /*currentPageを増やし、pagesLeftをへらす */
+                while ($pagesLeft != 0 && $currentPage <= $numPages) { /*currnetPageを増やし、pagesLeftをへらす */
                     if ($currentPage == $page) {
                         echo "<div class='pageNumberContainer'>
                                 <img src='assets/images/pageSelected.png'>
@@ -132,7 +132,6 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
         </div>
 
     </div>
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     <script type="text/javascript" src="assets/js/script.js"></script>
 </body>
 

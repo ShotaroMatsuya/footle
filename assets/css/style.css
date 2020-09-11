@@ -221,3 +221,31 @@ body {
 a .pageNumber {
   color: #4285f4;
 }
+.mainResultsSection .imageResults {
+  margin: 20px;
+}
+.gridItem {
+  position: relative;
+}
+.gridItem img {
+  max-width: 200px;
+  min-width: 50px;
+  visibility: hidden;
+}
+.gridItem .details {
+  visibility: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 11px;
+  padding: 3px;
+  box-sizing: border-box;
+  white-space: nowrap; /* ソース中のホワイトスペースを無視 ソース中の改行を1つの半角スペースとして表示*/
+}
+.gridItem:hover .details {
+  visibility: visible;
+}
