@@ -5,20 +5,6 @@ include("classes/DomDocumentParser.php");
 $alreadyCrawled = array();
 $crawling = array();
 $alreadyFoundImages = array();
-function insertImage($url, $src, $alt, $title)
-{
-	global $con;
-
-	$query = $con->prepare("INSERT INTO images(siteUrl, imageUrl, alt, title)
-							VALUES(:siteUrl, :imageUrl, :alt, :title)");
-
-	$query->bindParam(":siteUrl", $url);
-	$query->bindParam(":imageUrl", $src);
-	$query->bindParam(":alt", $alt);
-	$query->bindParam(":title", $title);
-
-	$query->execute();
-}
 
 function linkExists($url)
 {
@@ -54,6 +40,20 @@ function insertLink($url, $title, $description, $keywords)
 5,  about/aboutUs.php ->[scheme] + // + [host] + / + about/aboutUs.php
 */
 
+function insertImage($url, $src, $alt, $title)
+{
+	global $con;
+
+	$query = $con->prepare("INSERT INTO images(siteUrl, imageUrl, alt, title)
+							VALUES(:siteUrl, :imageUrl, :alt, :title)");
+
+	$query->bindParam(":siteUrl", $url);
+	$query->bindParam(":imageUrl", $src);
+	$query->bindParam(":alt", $alt);
+	$query->bindParam(":title", $title);
+
+	return $query->execute();
+}
 function createLink($src, $url)
 {
 
@@ -177,5 +177,5 @@ function followLinks($url)
 	}
 }
 
-$startUrl = "https://onefootball.com/";
+$startUrl = "https://www.shutterstock.com/search/rooney";
 followLinks($startUrl);

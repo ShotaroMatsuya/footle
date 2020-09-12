@@ -21,7 +21,7 @@
             </div>
             <div class="searchContainer">
                 <form action="search.php" method="GET">
-                    <input class="searchBox" type="text" name="term">
+                    <input class="searchBox" type="text" name="term" autocomplete="off">
                     <input class="searchButton" type="submit" value="Search">
                 </form>
 

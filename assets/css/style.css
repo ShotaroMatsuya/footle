@@ -125,7 +125,6 @@ body {
   padding-right: 20px;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .headerContent .searchBarContainer .searchButton img {
@@ -208,7 +207,7 @@ body {
   height: 37px;
 }
 .pageNumberContainer,
-.paginationContainer a {
+.pageNumberContainer a {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -235,8 +234,8 @@ a .pageNumber {
 .gridItem .details {
   visibility: hidden;
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 0px;
+  left: 0px;
   width: 100%;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.8);

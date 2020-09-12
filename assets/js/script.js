@@ -6,7 +6,7 @@ $(document).ready(function () {
     var url = $(this).attr("href");
 
     if (!id) {
-      alert("data-linkId attribute no found");
+      alert("data-linkId attribute not found");
     }
     increaseLinkClicks(id, url);
 
@@ -23,8 +23,32 @@ $(document).ready(function () {
     itemSelector: ".gridItem",
     columnWidth: 200,
     gutter: 5, //border space
-    // transitionDuration:'0.8s'; // window幅を変えたときの移動時間
+    // transitionDuration: "0.8s",
     isInitLayout: false, //load時にmasonryLayoutを無効化->jsで読み込ませる
+  });
+
+  $("[data-fancybox]").fancybox({
+    caption: function (instance, item) {
+      var caption = $(this).data("caption") || "";
+      var siteUrl = $(this).data("siteurl") || "";
+
+      if (item.type === "image") {
+        caption =
+          (caption.length ? caption + "<br />" : "") +
+          '<a href="' +
+          item.src +
+          '">View image</a><br>' +
+          '<a href="' +
+          siteUrl +
+          '">Visit page</a>';
+      }
+
+      return caption;
+    },
+    afterShow: function (instance, item) {
+      //画像がクリックされたあとに行う処理をここに書く
+      increaseImageClicks(item.src);
+    },
   });
 });
 function loadImage(src, className) {
@@ -56,5 +80,15 @@ function increaseLinkClicks(linkId, url) {
     }
 
     window.location.href = url;
+  });
+}
+function increaseImageClicks(imageUrl) {
+  $.post("ajax/updateImageCount.php", { imageUrl: imageUrl }).done(function (
+    result
+  ) {
+    if (result != "") {
+      alert(result);
+      return;
+    }
   });
 }
