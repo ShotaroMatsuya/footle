@@ -1,7 +1,7 @@
 <?php
-include("config.php");
-include("classes/SiteResultsProvider.php");
-include("classes/ImageResultsProvider.php");
+require_once("config.php");
+require_once("classes/SiteResultsProvider.php");
+require_once("classes/ImageResultsProvider.php");
 
 if (isset($_GET["term"])) {
     $term = $_GET["term"];

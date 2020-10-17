@@ -6,7 +6,7 @@ $alreadyCrawled = array();
 $crawling = array();
 $alreadyFoundImages = array();
 
-function linkExists($url)
+function linkExists($url) //urlのduplicateを防ぐ
 {
 	global $con;
 
@@ -17,7 +17,7 @@ function linkExists($url)
 	return $query->rowCount() != 0;
 }
 
-function insertLink($url, $title, $description, $keywords)
+function insertLink($url, $title, $description, $keywords) //sitesテーブルにinsert
 {
 	global $con;
 
@@ -40,7 +40,7 @@ function insertLink($url, $title, $description, $keywords)
 5,  about/aboutUs.php ->[scheme] + // + [host] + / + about/aboutUs.php
 */
 
-function insertImage($url, $src, $alt, $title)
+function insertImage($url, $src, $alt, $title) //imagesテーブルにinsert
 {
 	global $con;
 
@@ -54,11 +54,11 @@ function insertImage($url, $src, $alt, $title)
 
 	return $query->execute();
 }
-function createLink($src, $url)
+function createLink($src, $url) //anchorタグのhrefをグローバルリンクに変換する
 {
 
 	$scheme = parse_url($url)["scheme"]; // http
-	$host = parse_url($url)["host"]; // www.reecekenney.com
+	$host = parse_url($url)["host"]; // www.google.com
 
 	if (substr($src, 0, 2) == "//") {
 		$src =  $scheme . ":" . $src;
@@ -81,6 +81,8 @@ function getDetails($url)
 
 	$parser = new DomDocumentParser($url);
 
+
+	/** meta tag */
 	$titleArray = $parser->getTitleTags(); //NodeList
 
 	if (sizeof($titleArray) == 0 || $titleArray->item(0) == NULL) {
@@ -114,6 +116,7 @@ function getDetails($url)
 	$description = str_replace("\n", "", $description);
 	$keywords = str_replace("\n", "", $keywords);
 
+	/** sitesテーブルにinsert */
 	if (linkExists($url)) {
 		echo "$url already exists<br>";
 	} else if (insertLink($url, $title, $description, $keywords)) {
@@ -121,6 +124,8 @@ function getDetails($url)
 	} else {
 		echo "ERROR: Failed to insert $url<br>";
 	}
+
+	/**img tag */
 	$imageArray = $parser->getImages(); //NodeList
 	foreach ($imageArray as $image) {
 		$src = $image->getAttribute("src");
@@ -131,9 +136,10 @@ function getDetails($url)
 			continue;
 		}
 		$src = createLink($src, $url); //absolute pathを取得
+
+		//Insert the image
 		if (!in_array($src, $alreadyFoundImages)) {
 			$alreadyFoundImages[] = $src;
-			//Insert the image
 			insertImage($url, $src, $alt, $title);
 		}
 	}
@@ -149,10 +155,10 @@ function followLinks($url)
 
 	$linkList = $parser->getLinks();  /* NodeListはforeachで回せる */
 
-	foreach ($linkList as $link) { /* 1〜2階層目のanchor tagの取得 */
+	foreach ($linkList as $link) { /* 1階層目のanchor tagの取得 */
 		$href = $link->getAttribute("href");
 
-		if (strpos($href, "#") !== false) {  /* #が含まれているかどうか */
+		if (strpos($href, "#") !== false) {  /* #が含まれていれば.. */
 			continue;
 		} else if (substr($href, 0, 11) == "javascript:") {  /*jsで生成されたlinkかどうか*/
 			continue;
@@ -166,14 +172,14 @@ function followLinks($url)
 			$alreadyCrawled[] = $href;
 			$crawling[] = $href;
 			// Insert $href
-			getDetails($href);
+			getDetails($href); //tableにinsert
 		}
 	}
 
 	array_shift($crawling); /* 取得し終えたurl */
 
-	foreach ($crawling as $site) {
-		followLinks($site);  /* 2階層目のanchor tagの取得start */
+	foreach ($crawling as $site) {/* 2階層目以降のanchor tagの取得start */
+		followLinks($site);
 	}
 }
 
