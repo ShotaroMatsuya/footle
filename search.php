@@ -37,13 +37,38 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                     </a>
                 </div>
                 <div class="searchContainer">
-                    <form action="search.php" method="GET">
-                        <div class="searchBarContainer">
+                    <?php if ($type == "sites" || $type == "images") { ?>
+                        <form action="search.php" method="GET">
+                            <div class="searchBarContainer">
+                                <input type="hidden" name="type" value="<?php echo $type; ?>">
+                                <input class="searchBox" type="text" name="term" value="<?php echo $term; ?>" autocomplete="off">
+                                <button class="searchButton"><img src="assets/images/icons/search.png"></button>
+                            </div>
+                        </form>
+                    <?php } elseif ($type == "movies") { ?>
+                        <form id="search-form" name="search-form" onSubmit="return search()">
+                            <div class="searchBarContainer">
+                                <input class="searchBox search-field" type="search" id="query" value="<?php echo $term; ?>">
+
+                                <button class="searchButton" type="submit" id="search-btn" name="search-btn"><img src="assets/images/icons/search.png"></button>
+                            </div>
+                        </form>
+
+                    <?php } elseif ($type == "wiki") { ?>
+
+                        <form action="search.php" method="GET">
                             <input type="hidden" name="type" value="<?php echo $type; ?>">
-                            <input class="searchBox" type="text" name="term" value="<?php echo $term; ?>" autocomplete="off">
-                            <button class="searchButton"><img src="assets/images/icons/search.png"></button>
-                        </div>
-                    </form>
+
+
+
+                            <div class="searchBarContainer">
+                                <input class="searchBox" id="search" name="term" type="search" value="<?php echo $term; ?>" />
+                                <button class="searchButton" type="submit" id="searchBtn"><img src="assets/images/icons/search.png"></button>
+                            </div>
+
+                        </form>
+
+                    <?php } ?>
                 </div>
 
             </div>
@@ -88,34 +113,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
                 echo $resultsProvider->getResultsHtml($page, $pageSize, $term);
             } elseif ($type == "movies") {
-                echo '<nav class="navbar navbar-light bg-faded">
-                <div class="row">
-                     <div class="col-sm-3">
-                          <h1 class="logo" ><i class="fa fa-youtube yt"></i><span>Vidz</span></h1>
-                     </div>
-                    <div class="col-sm-9">
-                        
-                         <form class="form-inline " style="margin-top:5px;" id="search-form" name="search-form" onSubmit="return search()">
-                                 <table width="100%">
-                                    <tr>
-                                        <td width="100%">
-                                            <div class="d3 float-right" style="width:100%;" >	
-                                              <input class="form-control search-field" type="search" id="query" style="width:100%;"  placeholder="Search Youtube">
-                                              <span class="focus-border">
-                                                        <i></i>
-                                                    </span>
-                                                </div>
-                                        </td>
-                                        <td>
-                                              <button class="btn btn-outline-danger my-2 my-sm-0 " type="submit" id="search-btn"  name="search-btn" value="">Search</button>
-                                        </td>
-                                </tr>                
-                              </table>  
-                            </form>
-                    </div>
-                </div>
-             
-            </nav>
+                echo '
             <div class="content">
             <div class="container-fluid" id="results">
             </div> <!-- ENd of container fluid -->
@@ -126,19 +124,15 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
             </div>
             </div> <!-- End of content -->';
             } elseif ($type == "wiki") {
-                echo '<div class="first-row">
-                <input
-                  id="search"
-                  name="Search"
-                  type="search"
-                  placeholder="Search"
-                /><input id="searchBtn" type="button" value="Enter" />
-              </div>
-              <div id="about-results" class=""></div>
-              <div id="container-results" class=""></div>
+                echo '
+                <p class="resultsCount"></p>
+                <div class="siteResults">
+                <div class="resultContainer"></div>
+                </div>
               <br />
+              <input id="previous" type="button" value="previous" />
               <input id="next" type="button" value="next" />
-              <input id="previous" type="button" value="previous" />';
+              ';
             }
 
             ?>
@@ -192,9 +186,19 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
             <?php  } elseif ($type == "movies") { ?>
 
                 paginationLink on youtube
-            <?php } elseif ($type == "wiki") { ?>
+            <?php } elseif ($type == "wiki") {
+
+            ?>
                 paginationLink on wikipedia
-            <?php } ?>
+
+                <script type="text/javascript" src="assets/js/wiki.js"></script>
+                <script>
+                    var urlQuery = new URL(location);
+                    urlQuery.searchParams.set("term", input.value);
+                    console.log(urlQuery);
+                    searchBtnClickHandler();
+                </script>
+            <?php  } ?>
         </div>
 
     </div>
@@ -207,6 +211,8 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     <script type="text/javascript" src="assets/js/script.js"></script>
+    <script type="text/javascript" src="assets/js/tube.js"></script>
+
 </body>
 
 </html>
