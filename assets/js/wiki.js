@@ -6,6 +6,7 @@ var input = document.getElementById('search'),
   globalData,
   nextBtn = document.getElementById('next'),
   previousBtn = document.getElementById('previous'),
+  btnIcon = document.querySelector('.pageButtons'),
   totalhits = 0,
   globalTotalhits,
   currentPage = 1,
@@ -51,6 +52,7 @@ function nextBtnClickHandler(e) {
         Math.round(globalTotalhits / 20);
       if (totalhits > 20) {
         nextBtn.style.display = 'inline-block';
+        btnIcon.style.display = 'flex';
         previousBtn.style.display = 'inline-block';
       }
       for (var i = 0; i < 20; i++) {
@@ -111,6 +113,7 @@ function previousBtnClickHandler(e) {
         Math.round(globalTotalhits / 20);
       if (totalhits > 20) {
         nextBtn.style.display = 'inline-block';
+        btnIcon.style.display = 'flex';
         previousBtn.style.display = 'inline-block';
       }
       for (var i = 0; i < 20; i++) {
@@ -145,8 +148,8 @@ function previousBtnClickHandler(e) {
 }
 
 searchBtn.addEventListener('click', searchBtnClickHandler);
+
 function searchBtnClickHandler() {
-    
   resetValues();
   clearOldResults();
   term = input.value;
@@ -181,6 +184,7 @@ function searchBtnClickHandler() {
       Math.round(totalhits / 20);
     if (totalhits > 20) {
       nextBtn.style.display = 'inline-block';
+      btnIcon.style.display = 'flex';
       previousBtn.style.display = 'inline-block';
     }
     for (var i = 0; i < 20; i++) {

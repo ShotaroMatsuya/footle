@@ -175,6 +175,9 @@ body {
   flex-direction: column;
   margin-bottom: 26px;
 }
+.row.resultContainer {
+  flex-direction: row;
+}
 .resultContainer .title {
   margin: 0;
 }
@@ -278,143 +281,7 @@ a .pageNumber {
 .button-container {
   margin: 10px 0;
 }
-/* Global Button Styles */
-button.animated-button:link,
-a.animated-button:visited {
-  position: relative;
-  display: block;
-  margin: 30px auto 0;
-  padding: 14px 15px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  overflow: hidden;
-  letter-spacing: 0.08em;
-  border-radius: 0;
-  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
-  -webkit-transition: all 1s ease;
-  -moz-transition: all 1s ease;
-  -o-transition: all 1s ease;
-  transition: all 1s ease;
-}
-button.animated-button:link:after,
-a.animated-button:visited:after {
-  content: '';
-  position: absolute;
-  height: 0%;
-  left: 50%;
-  top: 50%;
-  width: 150%;
-  z-index: -1;
-  -webkit-transition: all 0.75s ease 0s;
-  -moz-transition: all 0.75s ease 0s;
-  -o-transition: all 0.75s ease 0s;
-  transition: all 0.75s ease 0s;
-}
-button.animated-button:link:hover,
-a.animated-button:visited:hover {
-  color: #fff;
-  text-shadow: none;
-}
-button.animated-button:link:hover:after,
-a.animated-button:visited:hover:after {
-  height: 450%;
-}
-button.animated-button:link,
-a.animated-button:visited {
-  position: relative;
-  display: block;
-  margin: 30px auto 0;
-  padding: 14px 15px;
-  color: #fff;
-  font-size: 14px;
-  border-radius: 0;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  overflow: hidden;
-  letter-spacing: 0.08em;
-  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
-  -webkit-transition: all 1s ease;
-  -moz-transition: all 1s ease;
-  -o-transition: all 1s ease;
-  transition: all 1s ease;
-}
 
-button.animated-button.thar-three {
-  float: right;
-  width: 150px;
-  margin-left: 10px;
-  color: #cd201f;
-  cursor: pointer;
-  background: #fff;
-  display: block;
-  position: relative;
-  border: 2px solid #cd201f;
-  transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
-}
-button.animated-button.thar-three:hover {
-  color: #fff !important;
-  background-color: transparent;
-  text-shadow: nthree;
-}
-button.animated-button.thar-three:hover:before {
-  left: 0%;
-  right: auto;
-  width: 100%;
-}
-button.animated-button.thar-three:before {
-  display: block;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  height: 100%;
-  width: 0px;
-  z-index: -1;
-  content: '';
-  color: #000 !important;
-  background: #cd201f;
-  transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
-}
-
-button.animated-button.thar-four {
-  float: right;
-  width: 150px;
-  color: #cd201f;
-  background: #fff;
-  cursor: pointer;
-  display: block;
-  position: relative;
-  border: 2px solid #cd201f;
-  transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
-}
-button.animated-button.thar-four:hover {
-  color: #fff !important;
-  background-color: transparent;
-  text-shadow: nfour;
-}
-button.animated-button.thar-four:hover:before {
-  right: 0%;
-  left: auto;
-  width: 100%;
-}
-button.animated-button.thar-four:before {
-  display: block;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 100%;
-  width: 0px;
-  z-index: -1;
-  content: '';
-  color: #000 !important;
-  background: #cd201f;
-  transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
-}
 .total-results {
   margin-top: 7px;
   display: inline-block;
@@ -423,6 +290,10 @@ button.animated-button.thar-four:before {
   .total-results {
     display: block;
   }
+}
+#prev-button,
+#next-button {
+  display: inline;
 }
 
 /* wiki */
@@ -451,7 +322,16 @@ button.animated-button.thar-four:before {
 #next,
 #previous {
   display: none;
-  width: 10%;
-  height: 20px;
-  margin-top: 1.5%;
+  cursor: pointer;
+}
+
+.paginationContainer button {
+  background-color: transparent;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  outline: none;
+}
+
+.paginationContainer button:active {
+  background-color: #ccc;
 }

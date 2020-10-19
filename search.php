@@ -46,9 +46,10 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                             </div>
                         </form>
                     <?php } elseif ($type == "movies") { ?>
-                        <form id="search-form" name="search-form" onSubmit="return search()">
+                        <form action="search.php" method="GET" id="search-form" name="search-form">
+                            <input type="hidden" name="type" value="<?php echo $type; ?>">
                             <div class="searchBarContainer">
-                                <input class="searchBox search-field" type="search" id="query" value="<?php echo $term; ?>">
+                                <input class="searchBox search-field" type="search" id="query" name="term" value="<?php echo $term; ?>">
 
                                 <button class="searchButton" type="submit" id="search-btn" name="search-btn"><img src="assets/images/icons/search.png"></button>
                             </div>
@@ -58,9 +59,6 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
                         <form action="search.php" method="GET">
                             <input type="hidden" name="type" value="<?php echo $type; ?>">
-
-
-
                             <div class="searchBarContainer">
                                 <input class="searchBox" id="search" name="term" type="search" value="<?php echo $term; ?>" />
                                 <button class="searchButton" type="submit" id="searchBtn"><img src="assets/images/icons/search.png"></button>
@@ -113,26 +111,13 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
                 echo $resultsProvider->getResultsHtml($page, $pageSize, $term);
             } elseif ($type == "movies") {
-                echo '
-            <div class="content">
-            <div class="container-fluid" id="results">
-            </div> <!-- ENd of container fluid -->
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">    <div id="btn-cnt"></div> </div>
-                </div>
-            </div>
-            </div> <!-- End of content -->';
+                echo '<div class="siteResults"></div>';
             } elseif ($type == "wiki") {
                 echo '
                 <p class="resultsCount"></p>
                 <div class="siteResults">
                 <div class="resultContainer"></div>
-                </div>
-              <br />
-              <input id="previous" type="button" value="previous" />
-              <input id="next" type="button" value="next" />
-              ';
+                </div>';
             }
 
             ?>
@@ -184,20 +169,48 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                 </div>
 
             <?php  } elseif ($type == "movies") { ?>
+                <div class="pageButtons">
 
-                paginationLink on youtube
+
+                </div>
+                <script type="text/javascript" src="assets/js/tube.js"></script>
+                <script>
+                    search();
+                </script>
+
+
             <?php } elseif ($type == "wiki") {
 
             ?>
-                paginationLink on wikipedia
+                <div class="pageButtons" style="display:none">
+                    <button>
+                        <div id="previous" class="pageNumberContainer">
+                            &lt;Prev
+                            <img src="assets/images/pageStart.png" alt="前へ">
+                        </div>
+                    </button>
+                    <div class='pageNumberContainer'>
+                        <img src='assets/images/pageSelected.png'>
+                    </div>
+                    <div class='pageNumberContainer'>
+                        <img src='assets/images/page.png'>
+                    </div>
 
-                <script type="text/javascript" src="assets/js/wiki.js"></script>
-                <script>
-                    var urlQuery = new URL(location);
-                    urlQuery.searchParams.set("term", input.value);
-                    console.log(urlQuery);
-                    searchBtnClickHandler();
-                </script>
+                    <button>
+                        <div id="next" class="pageNumberContainer">
+                            <img src="assets/images/pageEnd.png" alt="次へ">
+                            Next&gt;
+                        </div>
+                    </button>
+
+                    <script type="text/javascript" src="assets/js/wiki.js"></script>
+                    <script>
+                        searchBtnClickHandler();
+                    </script>
+
+
+                </div>
+
             <?php  } ?>
         </div>
 
