@@ -2,6 +2,15 @@
 include("config.php");
 include("classes/DomDocumentParser.php");
 
+if (!isset($_SESSION["username"])) {
+	header("Location: login.php");
+}
+
+if (!isset($_POST["crawlSite"]) || $_POST["crawlSite"] == "") {
+	echo "<h1>No Link Passed to page</h1>";
+	exit;
+}
+
 $alreadyCrawled = array();
 $crawling = array();
 $alreadyFoundImages = array();
@@ -183,5 +192,7 @@ function followLinks($url)
 	}
 }
 
-$startUrl = "https://www.shutterstock.com/search/rooney";
+$startUrl = $_POST["crawlSite"];
+// $startUrl = "https://onefootball.com/en/home";
+
 followLinks($startUrl);

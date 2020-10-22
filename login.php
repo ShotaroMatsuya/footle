@@ -46,7 +46,7 @@ function getInputValue($name)
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
     <title>ログイン</title>
 </head>
 
@@ -102,7 +102,7 @@ function getInputValue($name)
                                 </div>
                                 <input name="submitButton" type="submit" value="Login" class="btn btn-primary btn-block">
                             </form>
-                            <p>登録ページは<a href="register.php">コチラ</a></p>
+
                         </div>
                     </div>
 
@@ -137,8 +137,6 @@ function getInputValue($name)
     <script>
         // Get the current year for the copyright
         $('#year').text(new Date().getFullYear());
-
-        CKEDITOR.replace('editor1');
     </script>
 </body>
 

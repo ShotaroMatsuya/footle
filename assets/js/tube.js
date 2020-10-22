@@ -1,9 +1,4 @@
 
-$(function() {
-	// $('#search-form').submit(function(e) {
-	// 	e.preventDefault();
-	// })
-});
 const APIkey = "";
 var resultSection = $(".mainResultsSection");
 function search() {
@@ -21,7 +16,7 @@ function search() {
 			part: 'snippet,id',
 			q: q,
             type: 'video',
-            maxResults:20,
+            maxResults:5,
 			key: APIkey}, 
 			function(data) {
 				var nextPageToken = data.nextPageToken;
@@ -114,7 +109,7 @@ function nextPage() {
 			q: q,
 			pageToken: token,
             type: 'video',
-            maxResults:20,
+            maxResults:5,
 			key: APIkey}, 
 			function(data) {
 				var nextPageToken = data.nextPageToken;
@@ -158,7 +153,7 @@ function prevPage() {
 			q: q,
 			pageToken: token,
             type: 'video',
-            maxResults:20,
+            maxResults:5,
 			key: APIkey
 		}, 
 			function(data) {
