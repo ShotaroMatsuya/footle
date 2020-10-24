@@ -1,5 +1,3 @@
-
-const APIkey = "";
 var resultSection = $(".mainResultsSection");
 function search() {
 	//Clear any previous results
@@ -12,12 +10,8 @@ function search() {
 	
 	//Run GET Request 	on API
 	$.get(
-		"https://www.googleapis.com/youtube/v3/search",{
-			part: 'snippet,id',
-			q: q,
-            type: 'video',
-            maxResults:5,
-			key: APIkey}, 
+		"../../doodle/youtube.php",{
+			term: q}, 
 			function(data) {
 				var nextPageToken = data.nextPageToken;
 				var prevPageToken = data.prevPageToken;
@@ -41,7 +35,7 @@ function search() {
 				//Display buttons
 				$('.pageButtons').prepend(buttons);
 			}
-	);	
+	 );	
 }
 
 //Build Output
@@ -104,13 +98,10 @@ function nextPage() {
 	
 	//Run GET Request 	on API
 	$.get(
-		"https://www.googleapis.com/youtube/v3/search",{
-			part: 'snippet, id',
-			q: q,
-			pageToken: token,
-            type: 'video',
-            maxResults:5,
-			key: APIkey}, 
+		"../../doodle/youtube.php",{
+			term: q,
+			pToken: token
+            }, 
 			function(data) {
 				var nextPageToken = data.nextPageToken;
 				var prevPageToken = data.prevPageToken;
@@ -148,13 +139,9 @@ function prevPage() {
 	
 	//Run GET Request 	on API
 	$.get(
-		"https://www.googleapis.com/youtube/v3/search",{
-			part: 'snippet,id',
-			q: q,
-			pageToken: token,
-            type: 'video',
-            maxResults:5,
-			key: APIkey
+		"../../doodle/youtube.php",{
+			term: q,
+			pToken: token           
 		}, 
 			function(data) {
 				var nextPageToken = data.nextPageToken;
