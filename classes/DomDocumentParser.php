@@ -8,7 +8,7 @@ class DomDocumentParser
 	{
 
 		$options = array(
-			'http' => array('method' => "GET", 'header' => "User-Agent: doodleBot/0.1\n")
+			'http' => array('method' => "GET", 'header' => "User-Agent: footleBot/0.1\n")
 		);
 		$context = stream_context_create($options);
 

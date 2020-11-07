@@ -42,7 +42,7 @@ function deleteRow() {
   function resetCookie(){
       console.log('test');
      document.cookie = "PHPSESSID=;Path=/";
-     location.href = "/doodle";
+     location.href = "/footle";
   }
   myForm1.addEventListener('submit',()=>{
     if(crawlBtn1.disabled === true){

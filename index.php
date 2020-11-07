@@ -2,9 +2,9 @@
 <html lang="ja">
 
 <head>
-    <title>Welcome to Doodle</title>
+    <title>Welcome to Footle</title>
     <meta name="description" content="Search the web for sites and images.">
-    <meta name="keywords" content="Search engine, doodle, websites">
+    <meta name="keywords" content="Search engine, Footle, websites">
     <meta name="description" content="shotaro matsuya">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 

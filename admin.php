@@ -20,7 +20,7 @@ $username = $_SESSION["username"];
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css" />
-    <title>Bootstrap Theme</title>
+    <title>Admin Page</title>
 </head>
 
 <body>
@@ -109,6 +109,16 @@ $username = $_SESSION["username"];
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="radio" name="crawlSite" class="form-check-input" value="https://www.skysports.com/football/news"> Sky sports
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" name="crawlSite" class="form-check-input" value="https://talksport.com/football/"> Talk sport - football -
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" name="crawlSite" class="form-check-input" value="https://footballnews.net/"> FootBallNews.net
                                         </label>
                                     </div>
 

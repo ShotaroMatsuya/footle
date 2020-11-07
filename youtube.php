@@ -24,7 +24,7 @@ if (isset($_GET['term'])) {
    * {{ Google Cloud Console }} <{{ https://cloud.google.com/console }}>
    * Please ensure that you have enabled the YouTube Data API for your project.
    */
-    $DEVELOPER_KEY = '';
+    $DEVELOPER_KEY = 'AIzaSyBcE_wcVTih0l0d7dMA2Qx8byQi0wYlWUc';
 
     $client = new Google_Client();
     $client->setDeveloperKey($DEVELOPER_KEY);

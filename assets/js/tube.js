@@ -10,7 +10,7 @@ function search() {
 	
 	//Run GET Request 	on API
 	$.get(
-		"../../doodle/youtube.php",{
+		"/footle/youtube.php",{
 			term: q}, 
 			function(data) {
 				var nextPageToken = data.nextPageToken;
@@ -98,7 +98,7 @@ function nextPage() {
 	
 	//Run GET Request 	on API
 	$.get(
-		"../../doodle/youtube.php",{
+		"/footle/youtube.php",{
 			term: q,
 			pToken: token
             }, 
@@ -139,7 +139,7 @@ function prevPage() {
 	
 	//Run GET Request 	on API
 	$.get(
-		"../../doodle/youtube.php",{
+		"/footle//youtube.php",{
 			term: q,
 			pToken: token           
 		}, 
