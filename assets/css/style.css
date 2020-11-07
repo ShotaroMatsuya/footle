@@ -50,8 +50,7 @@ body {
 }
 
 .mainSection .searchContainer .searchBox {
-  border: none;
-  box-shadow: 0 2px 2px 4px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
   height: 44px;
   border-radius: 24px;
   outline: none;
@@ -61,6 +60,7 @@ body {
   width: 70%;
   max-width: 630px;
   color: #000;
+  border: 1px solid #000;
 }
 
 .mainSection .logoContainer {
@@ -100,12 +100,12 @@ body {
   height: 44px;
   border-radius: 24px;
   background-color: #fff;
-  box-shadow: 0 2px 2px 4px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
   width: 70%;
   max-width: 630px;
   box-sizing: border-box;
   display: flex;
+  border: 1px solid #000;
 }
 
 .headerContent .searchBarContainer .searchBox {
@@ -121,9 +121,9 @@ body {
 
 .headerContent .searchBarContainer .searchButton {
   background-color: #eee;
-  height: 44px;
+  height: 42px;
   margin-top: 0;
-  width: 44px;
+  width: 42px;
   display: flex;
   justify-content: center;
   align-items: center;
