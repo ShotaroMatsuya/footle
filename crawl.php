@@ -137,7 +137,7 @@ function getDetails($url)
 	/**img tag */
 	$imageArray = $parser->getImages(); //NodeList
 	foreach ($imageArray as $image) {
-		$src = $image->getAttribute("src");
+		$src = $image->getAttribute("data-src");
 		$alt = $image->getAttribute("alt");
 		$title = $image->getAttribute("title");
 
@@ -163,6 +163,9 @@ function followLinks($url)
 	$parser = new DomDocumentParser($url);
 
 	$linkList = $parser->getLinks();  /* NodeListはforeachで回せる */
+	// $testData = $parser->testRunning();
+	// var_dump($testData);
+	// exit;
 
 	foreach ($linkList as $link) { /* 1階層目のanchor tagの取得 */
 		$href = $link->getAttribute("href");
