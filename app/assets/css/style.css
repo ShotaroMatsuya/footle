@@ -338,3 +338,7 @@ a .pageNumber {
 .paginationContainer button:active {
   background-color: #ccc;
 }
+.fancybox-image,
+.fancybox-spaceball {
+  left: auto;
+}

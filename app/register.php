@@ -12,8 +12,7 @@ if (isset($_POST["submitButton"])) {
     // return false;
     $success = $user->register($username, $password);
     if ($success) {
-        echo "success!";
-        return false;
+
         $_SESSION["username"] = $username;
         header("Location: admin.php");
     }
