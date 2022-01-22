@@ -1,5 +1,5 @@
 app/youtube.php
 vendor/
 env/*.sql
-.vscode/
+# .vscode/
 app/assets/images/image/*

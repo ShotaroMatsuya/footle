@@ -105,7 +105,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                 echo $resultsProvider->getResultsHtml($page, $pageSize, $term);
             } elseif ($type == "images") {
                 $resultsProvider = new ImageResultsProvider($con);
-                $pageSize = 1000;
+                $pageSize = 300;
                 $numResults = $resultsProvider->getNumResults($term);
 
                 echo "<p class='resultsCount'>$numResults results found</p>";
