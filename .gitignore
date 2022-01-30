@@ -1,3 +1,5 @@
-/config.php
-/youtube.php
+app/youtube.php
 vendor/
+env/*.sql
+# .vscode/
+app/assets/images/image/*

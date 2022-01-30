@@ -22,8 +22,9 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
     <meta charset="UTF-8">
     <title>Welcome to Footle</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" />
-    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 </head>
 
@@ -95,7 +96,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
         <div class="mainResultsSection">
             <?php
             if ($type == "sites") {
-                $resultsProvider = new SiteResultsProviders($con);
+                $resultsProvider = new SiteResultsProvider($con);
                 $pageSize = 20;
                 $numResults = $resultsProvider->getNumResults($term);
 
@@ -103,8 +104,8 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
                 echo $resultsProvider->getResultsHtml($page, $pageSize, $term);
             } elseif ($type == "images") {
-                $resultsProvider = new ImageResultsProviders($con);
-                $pageSize = 30;
+                $resultsProvider = new ImageResultsProvider($con);
+                $pageSize = 300;
                 $numResults = $resultsProvider->getNumResults($term);
 
                 echo "<p class='resultsCount'>$numResults results found</p>";

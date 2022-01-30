@@ -1,5 +1,5 @@
 <?php
-class ImageResultsProviders
+class ImageResultsProvider
 {
     private $con;
     public function __construct($con)
@@ -60,8 +60,10 @@ class ImageResultsProviders
 
             // phpからjsに変数をエスケープして渡す場合は、「\"」でかこむ
             $resultsHtml .= "<div class='gridItem image$count'>
-                                <a href='$imageUrl' data-fancybox data-caption='$displayText' data-siteurl='$siteUrl'>
-                                    <script>
+								<a href='$imageUrl' data-fancybox='images_buttons' data-caption='$displayText'
+									data-siteurl='$siteUrl'>
+            
+            <script>
                                         $(document).ready(function() {
                                             loadImage(\"$imageUrl\", \"image$count\");  
                                         });

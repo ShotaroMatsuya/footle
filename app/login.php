@@ -12,8 +12,13 @@ if (isset($_POST["submitButton"])) {
     $success = $user->login($username, $password);
 
     if ($success) {
+
         $_SESSION["username"] = $username;
+
         header("Location: admin.php");
+    } else {
+        echo "something went wrong!";
+        exit;
     }
 }
 function sanitizeFormValue($inputText)
