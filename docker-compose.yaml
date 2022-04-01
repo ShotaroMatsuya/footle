@@ -31,6 +31,7 @@ services:
     volumes:
       - data:/var/lib/mysql
       - ./env:/etc/mysql/sql
+      - ./dockerfiles/initdb.d:/docker-entrypoint-initdb.d
   composer:
     build:
       context: ./dockerfiles
