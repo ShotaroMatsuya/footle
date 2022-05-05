@@ -12,6 +12,8 @@ if (isset($_GET["term"])) {
 }
 $type = isset($_GET["type"]) ? $_GET["type"] : "sites";
 $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+$order = isset($_GET["order"]) ? $_GET["order"] : "clicks";
+$isRand = $order === 'random';
 
 ?>
 
@@ -21,6 +23,8 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 <head>
     <meta charset="UTF-8">
     <title>Welcome to Footle</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
@@ -68,25 +72,38 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                         </form>
 
                     <?php } ?>
+
                 </div>
 
             </div>
             <div class="tabsContainer">
                 <ul class="tabList">
                     <li class="<?php echo $type == 'sites' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=sites"; ?>'>Sites</a>
+                        <a href='<?php echo "search.php?term=$term&type=sites&order=$order"; ?>'>Sites</a>
                     </li>
                     <li class="<?php echo $type == 'images' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=images"; ?>'>Images</a>
+                        <a href='<?php echo "search.php?term=$term&type=images&order=$order"; ?>'>Images</a>
                     </li>
                     <li class="<?php echo $type == 'movies' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=movies"; ?>'>Movies</a>
+                        <a href='<?php echo "search.php?term=$term&type=movies&order=$order"; ?>'>Movies</a>
                     </li>
                     <li class="<?php echo $type == 'wiki' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=wiki"; ?>'>Wikipedia</a>
+                        <a href='<?php echo "search.php?term=$term&type=wiki&order=$order"; ?>'>Wikipedia</a>
                     </li>
+                    <?php 
+                    if($order === 'random' && ($type === 'sites' || $type === 'images')){
+                    ?>
+                    <li>
+                        <button type="button" id="random-toggle" class="btn btn-outline-danger active" style="padding: revert;"><span class="material-icons" style="line-height: unset;">shuffle</span></button>
+                    </li>
+                    <?php 
+                    }elseif($order === 'clicks' && $type === 'sites' || $type ==='images'){
+                    ?>
+                    <li>
+                        <button type="button" id="random-toggle" class="btn btn-outline-danger" style="padding: revert;"><span class="material-icons" style="line-height: unset;">shuffle</span></button>
+                    </li>
+                    <?php } ?>
                 </ul>
-
             </div>
         </div>
 
@@ -102,7 +119,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
                 echo "<p class='resultsCount'>$numResults results found</p>";
 
-                echo $resultsProvider->getResultsHtml($page, $pageSize, $term);
+                echo $resultsProvider->getResultsHtml($page, $pageSize, $term, $order);
             } elseif ($type == "images") {
                 $resultsProvider = new ImageResultsProvider($con);
                 $pageSize = 300;
@@ -110,7 +127,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
                 echo "<p class='resultsCount'>$numResults results found</p>";
 
-                echo $resultsProvider->getResultsHtml($page, $pageSize, $term);
+                echo $resultsProvider->getResultsHtml($page, $pageSize, $term, $order);
             } elseif ($type == "movies") {
                 echo '<div class="siteResults"></div>';
             } elseif ($type == "wiki") {
@@ -153,7 +170,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                             </div>";
                         } else {
                             echo "<div class='pageNumberContainer'>
-                                <a href='search.php?term=$term&type=$type&page=$currentPage'>
+                                <a href='search.php?term=$term&type=$type&page=$currentPage&order=$order'>
                                     <img src='assets/images/page.png'>
                                     <span class='pageNumber'>$currentPage</span>
                                 </a>

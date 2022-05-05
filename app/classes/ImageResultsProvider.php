@@ -19,19 +19,23 @@ class ImageResultsProvider
         $row = $query->fetch(PDO::FETCH_ASSOC);    /* 連想配列として取得(keyはtotal)　*/
         return $row["total"];
     }
-    public function getResultsHtml($page, $pageSize, $term)
+    public function getResultsHtml($page, $pageSize, $term, $order = 'clicks')
     {
         $fromLimit = ($page - 1) * $pageSize;
         //page 1 : (1 - 1) * 20 :0
         //page 2 : (2 - 1) * 20 :20
         //page 3 : (3 - 1) * 20 :40
 
+        if($order === 'random'){
+            $order = 'RAND()';
+        }
+
         $query = $this->con->prepare("SELECT *
                                         FROM images 
                                         WHERE (title LIKE :term 
                                         OR alt LIKE :term)
                                         AND broken=0
-                                        ORDER BY clicks DESC
+                                        ORDER BY $order  DESC
                                         LIMIT :fromLimit, :pageSize");
         $searchTerm = "%" . $term . "%";
         $query->bindParam(":term", $searchTerm);
