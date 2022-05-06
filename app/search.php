@@ -15,6 +15,8 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 $order = isset($_GET["order"]) ? $_GET["order"] : "clicks";
 $isRand = $order === 'random';
 
+$num = isset($_GET["num"]) ? $_GET["num"] : '30';
+
 ?>
 
 <!DOCTYPE html>
@@ -79,16 +81,16 @@ $isRand = $order === 'random';
             <div class="tabsContainer">
                 <ul class="tabList">
                     <li class="<?php echo $type == 'sites' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=sites&order=$order"; ?>'>Sites</a>
+                        <a href='<?php echo "search.php?term=$term&type=sites&order=$order&num=$num"; ?>'>Sites</a>
                     </li>
                     <li class="<?php echo $type == 'images' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=images&order=$order"; ?>'>Images</a>
+                        <a href='<?php echo "search.php?term=$term&type=images&order=$order&num=$num"; ?>'>Images</a>
                     </li>
                     <li class="<?php echo $type == 'movies' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=movies&order=$order"; ?>'>Movies</a>
+                        <a href='<?php echo "search.php?term=$term&type=movies&order=$order&num=$num"; ?>'>Movies</a>
                     </li>
                     <li class="<?php echo $type == 'wiki' ? 'active' : '' ?>">
-                        <a href='<?php echo "search.php?term=$term&type=wiki&order=$order"; ?>'>Wikipedia</a>
+                        <a href='<?php echo "search.php?term=$term&type=wiki&order=$order&num=$num"; ?>'>Wikipedia</a>
                     </li>
                     <?php 
                     if($order === 'random' && ($type === 'sites' || $type === 'images')){
@@ -103,6 +105,26 @@ $isRand = $order === 'random';
                         <button type="button" id="random-toggle" class="btn btn-outline-danger" style="padding: revert;"><span class="material-icons" style="line-height: unset;">shuffle</span></button>
                     </li>
                     <?php } ?>
+                    <li>
+                        <div class="input-group">
+                        <select class="custom-select" id="num-per-page" name="num">
+                            <option selected>Choose...</option>
+                            <option value="10" <?= $num === '10' ? 'selected': ''  ?> >10件</option>
+                            <option value="20" <?= $num === '20' ? 'selected': ''  ?>>20件</option>
+                            <option value="30" <?= $num === '30' ? 'selected': ''  ?>>30件</option>
+                            <option value="40" <?= $num === '40' ? 'selected': ''  ?>>40件</option>
+                            <option value="50" <?= $num === '50' ? 'selected': ''  ?>>50件</option>
+                            <option value="100" <?= $num === '100' ? 'selected': ''  ?>>100件</option>
+                            <option value="200" <?= $num === '200' ? 'selected': ''  ?>>200件</option>
+                            <option value="300" <?= $num === '300' ? 'selected': ''  ?>>300件</option>
+                            <option value="500" <?= $num === '500' ? 'selected': ''  ?>>500件</option>
+                            <option value="1000" <?= $num === '1000' ? 'selected': ''  ?>>1000件</option>
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" id="per-page" type="button">/ PAGE</button>
+                        </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -114,18 +136,51 @@ $isRand = $order === 'random';
             <?php
             if ($type == "sites") {
                 $resultsProvider = new SiteResultsProvider($con);
-                $pageSize = 20;
-                $numResults = $resultsProvider->getNumResults($term);
+                $pageSize =(int)$num;
+                $numResults = (int)$resultsProvider->getNumResults($term);
 
-                echo "<p class='resultsCount'>$numResults results found</p>";
+                $offset = null;
+                if((int)$page === 1){
+                    $offset= 1;
+                }else{
+                    $offset = ($page - 1) * $pageSize;
+                }
+
+                $end = $page * $pageSize;
+
+                if($end > $numResults ){
+                    $end = $numResults;
+                }
+
+                if($numResults == 0){
+                    $offset = 0;
+                }
+
+                echo "<p class='resultsCount'>$numResults results found. ($offset ~ $end)</p>";
 
                 echo $resultsProvider->getResultsHtml($page, $pageSize, $term, $order);
             } elseif ($type == "images") {
                 $resultsProvider = new ImageResultsProvider($con);
-                $pageSize = 300;
+                $pageSize = (int)$num;
                 $numResults = $resultsProvider->getNumResults($term);
 
-                echo "<p class='resultsCount'>$numResults results found</p>";
+                $offset = null;
+                if((int)$page === 1){
+                    $offset= 1;
+                }else{
+                    $offset = ($page - 1) * $pageSize;
+                }
+
+                $end = $page * $pageSize;
+                if($end > $numResults ){
+                    $end = $numResults;
+                }
+
+                if($numResults == 0){
+                    $offset = 0;
+                }
+
+                echo "<p class='resultsCount'>$numResults results found. ($offset ~ $end)</p>";
 
                 echo $resultsProvider->getResultsHtml($page, $pageSize, $term, $order);
             } elseif ($type == "movies") {
@@ -170,7 +225,7 @@ $isRand = $order === 'random';
                             </div>";
                         } else {
                             echo "<div class='pageNumberContainer'>
-                                <a href='search.php?term=$term&type=$type&page=$currentPage&order=$order'>
+                                <a href='search.php?term=$term&type=$type&page=$currentPage&order=$order&num=$num'>
                                     <img src='assets/images/page.png'>
                                     <span class='pageNumber'>$currentPage</span>
                                 </a>

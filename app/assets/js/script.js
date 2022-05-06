@@ -81,6 +81,12 @@ $(document).ready(function () {
       window.location.href = '/search.php?' + urlParams;
     }
   });
+  var num = '';
+  $('#per-page').on('click', function () {
+    num = $('[name=num]').val();
+    var urlParams = setParam(searchArr, 'num', num);
+    window.location.href = '/search.php?' + urlParams;
+  });
 });
 
 function setParam(search, key, value) {
