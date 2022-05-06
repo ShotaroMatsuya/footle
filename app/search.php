@@ -15,7 +15,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 $order = isset($_GET["order"]) ? $_GET["order"] : "clicks";
 $isRand = $order === 'random';
 
-$num = isset($_GET["num"]) ? $_GET["num"] : '30';
+$num = isset($_GET["num"]) ? $_GET["num"] : 30;
 
 ?>
 
@@ -105,10 +105,10 @@ $num = isset($_GET["num"]) ? $_GET["num"] : '30';
                         <button type="button" id="random-toggle" class="btn btn-outline-danger" style="padding: revert;"><span class="material-icons" style="line-height: unset;">shuffle</span></button>
                     </li>
                     <?php } ?>
+                    <?php if($type === 'sites' || $type === 'images'){ ?>
                     <li>
                         <div class="input-group">
                         <select class="custom-select" id="num-per-page" name="num">
-                            <option selected>Choose...</option>
                             <option value="10" <?= $num === '10' ? 'selected': ''  ?> >10件</option>
                             <option value="20" <?= $num === '20' ? 'selected': ''  ?>>20件</option>
                             <option value="30" <?= $num === '30' ? 'selected': ''  ?>>30件</option>
@@ -125,6 +125,7 @@ $num = isset($_GET["num"]) ? $_GET["num"] : '30';
                         </div>
                         </div>
                     </li>
+                    <?php } ?>
                 </ul>
             </div>
         </div>
