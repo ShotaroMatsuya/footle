@@ -30,7 +30,7 @@ $(document).ready(function () {
   $('[data-fancybox]').fancybox({
     buttons: ['zoom', 'slideShow', 'fullScreen', 'thumbs', 'close'],
     thumbs: {
-      autoStart: true,
+      autoStart: false,
     },
 
     caption: function (instance, item) {
