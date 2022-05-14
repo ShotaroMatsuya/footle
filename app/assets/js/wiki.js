@@ -41,7 +41,6 @@ function nextBtnClickHandler(e) {
         '&callback=callback&srlimit=20'
     );
     whenAvailable('globalData', function () {
-      
       aboutResults.innerHTML =
         'found ' +
         totalhits +
@@ -57,30 +56,34 @@ function nextBtnClickHandler(e) {
       }
       for (var i = 0; i < 20; i++) {
         var result = document.createElement('div');
-      result.className = 'resultContainer';
-      var h3 = document.createElement('h3');
-      h3.classList.add('title');
-      
-      // result.innerHTML = globalData.query.search[i].snippet;
-      var aTag = document.createElement('a');
-      aTag.href =
-      'https://ja.wikipedia.org/wiki/' +
-        globalData.query.search[i].title.replace(/\s/g, '_');
+        result.className = 'resultContainer';
+        var h3 = document.createElement('h3');
+        h3.classList.add('title');
+
+        // result.innerHTML = globalData.query.search[i].snippet;
+        var aTag = document.createElement('a');
+        aTag.href =
+          'https://ja.wikipedia.org/wiki/' +
+          globalData.query.search[i].title.replace(/\s/g, '_');
         aTag.innerHTML = globalData.query.search[i].title;
         h3.appendChild(aTag);
         var urlSpan = document.createElement('span');
-        urlSpan.classList.add("url");
-        urlSpan.innerHTML = 'https://ja.wikipedia.org/wiki/' +
-        globalData.query.search[i].title.replace(/\s/g, '_');
-        
+        urlSpan.classList.add('url');
+        urlSpan.innerHTML =
+          'https://ja.wikipedia.org/wiki/' +
+          globalData.query.search[i].title.replace(/\s/g, '_');
+
         console.log(globalData.query.search[i].snippet.replace(/<.*>/g, ''));
         var desSpan = document.createElement('span');
         desSpan.classList.add('description');
-        desSpan.innerHTML = globalData.query.search[i].snippet.replace(/<.*>/g, '');
-      result.appendChild(h3);
-      result.appendChild(urlSpan);
-      result.appendChild(desSpan)
-      resultsContainer.appendChild(result);
+        desSpan.innerHTML = globalData.query.search[i].snippet.replace(
+          /<.*>/g,
+          ''
+        );
+        result.appendChild(h3);
+        result.appendChild(urlSpan);
+        result.appendChild(desSpan);
+        resultsContainer.appendChild(result);
       }
     });
   } else {
@@ -104,7 +107,6 @@ function previousBtnClickHandler(e) {
         '&callback=callback&srlimit=20'
     );
     whenAvailable('globalData', function () {
-      
       aboutResults.innerHTML =
         'results ' +
         'current page:' +
@@ -118,30 +120,34 @@ function previousBtnClickHandler(e) {
       }
       for (var i = 0; i < 20; i++) {
         var result = document.createElement('div');
-      result.className = 'resultContainer';
-      var h3 = document.createElement('h3');
-      h3.classList.add('title');
-      
-      // result.innerHTML = globalData.query.search[i].snippet;
-      var aTag = document.createElement('a');
-      aTag.href =
-      'https://ja.wikipedia.org/wiki/' +
-        globalData.query.search[i].title.replace(/\s/g, '_');
+        result.className = 'resultContainer';
+        var h3 = document.createElement('h3');
+        h3.classList.add('title');
+
+        // result.innerHTML = globalData.query.search[i].snippet;
+        var aTag = document.createElement('a');
+        aTag.href =
+          'https://ja.wikipedia.org/wiki/' +
+          globalData.query.search[i].title.replace(/\s/g, '_');
         aTag.innerHTML = globalData.query.search[i].title;
         h3.appendChild(aTag);
         var urlSpan = document.createElement('span');
-        urlSpan.classList.add("url");
-        urlSpan.innerHTML = 'https://ja.wikipedia.org/wiki/' +
-        globalData.query.search[i].title.replace(/\s/g, '_');
-        
+        urlSpan.classList.add('url');
+        urlSpan.innerHTML =
+          'https://ja.wikipedia.org/wiki/' +
+          globalData.query.search[i].title.replace(/\s/g, '_');
+
         console.log(globalData.query.search[i].snippet.replace(/<.*>/g, ''));
         var desSpan = document.createElement('span');
         desSpan.classList.add('description');
-        desSpan.innerHTML = globalData.query.search[i].snippet.replace(/<.*>/g, '');
-      result.appendChild(h3);
-      result.appendChild(urlSpan);
-      result.appendChild(desSpan)
-      resultsContainer.appendChild(result);
+        desSpan.innerHTML = globalData.query.search[i].snippet.replace(
+          /<.*>/g,
+          ''
+        );
+        result.appendChild(h3);
+        result.appendChild(urlSpan);
+        result.appendChild(desSpan);
+        resultsContainer.appendChild(result);
       }
     });
   }
@@ -157,9 +163,8 @@ function searchBtnClickHandler() {
     clearOldResults();
   }
   var urlQuery = new URL(location);
-  urlQuery.searchParams.set("term", input.value);
-                    console.log(urlQuery);
-  
+  urlQuery.searchParams.set('term', input.value);
+  console.log(urlQuery);
 
   JSONP(
     'https://ja.wikipedia.org/w/api.php?action=query&list=search&srsearch=' +
@@ -173,7 +178,7 @@ function searchBtnClickHandler() {
     // console.log(globalData.query);
     globalTotalhits = globalData.query.searchinfo.totalhits;
     totalhits = globalTotalhits;
-    
+
     aboutResults.innerHTML =
       'found ' +
       totalhits +
@@ -192,26 +197,29 @@ function searchBtnClickHandler() {
       result.className = 'resultContainer';
       var h3 = document.createElement('h3');
       h3.classList.add('title');
-      
+
       // result.innerHTML = globalData.query.search[i].snippet;
       var aTag = document.createElement('a');
       aTag.href =
-      'https://ja.wikipedia.org/wiki/' +
+        'https://ja.wikipedia.org/wiki/' +
         globalData.query.search[i].title.replace(/\s/g, '_');
-        aTag.innerHTML = globalData.query.search[i].title;
-        h3.appendChild(aTag);
-        var urlSpan = document.createElement('span');
-        urlSpan.classList.add("url");
-        urlSpan.innerHTML = 'https://ja.wikipedia.org/wiki/' +
+      aTag.innerHTML = globalData.query.search[i].title;
+      h3.appendChild(aTag);
+      var urlSpan = document.createElement('span');
+      urlSpan.classList.add('url');
+      urlSpan.innerHTML =
+        'https://ja.wikipedia.org/wiki/' +
         globalData.query.search[i].title.replace(/\s/g, '_');
-        
-  
-        var desSpan = document.createElement('span');
-        desSpan.classList.add('description');
-        desSpan.innerHTML = globalData.query.search[i].snippet.replace(/<.*>/g, '');
+
+      var desSpan = document.createElement('span');
+      desSpan.classList.add('description');
+      desSpan.innerHTML = globalData.query.search[i].snippet.replace(
+        /<.*>/g,
+        ''
+      );
       result.appendChild(h3);
       result.appendChild(urlSpan);
-      result.appendChild(desSpan)
+      result.appendChild(desSpan);
       resultsContainer.appendChild(result);
     }
     globalData = 'undefined';

@@ -30,7 +30,7 @@ $(document).ready(function () {
   $('[data-fancybox]').fancybox({
     buttons: ['zoom', 'slideShow', 'fullScreen', 'thumbs', 'close'],
     thumbs: {
-      autoStart: true,
+      autoStart: false,
     },
 
     caption: function (instance, item) {
@@ -66,7 +66,50 @@ $(document).ready(function () {
       increaseImageClicks(item.src);
     },
   });
+
+  var searchArr = location.search ? location.search.substr(1).split('&') : [];
+  console.log(searchArr);
+
+  $('#random-toggle').on('click', function () {
+    if (!$(this).hasClass('active')) {
+      $(this).addClass('active');
+      var urlParams = setParam(searchArr, 'order', 'random');
+      window.location.href = '/search.php?' + urlParams;
+    } else {
+      $(this).removeClass('active');
+      var urlParams = setParam(searchArr, 'order', 'clicks');
+      window.location.href = '/search.php?' + urlParams;
+    }
+  });
+  var num = '';
+  $('#per-page').on('click', function () {
+    num = $('[name=num]').val();
+    var urlParams = setParam(searchArr, 'num', num);
+    window.location.href = '/search.php?' + urlParams;
+  });
 });
+
+function setParam(search, key, value) {
+  var params = search.reduce(function (acc, q) {
+    var key = q.split('=')[0];
+    var value = q.split('=')[1];
+    acc[key] = decodeURIComponent(value);
+    return acc;
+  }, {});
+  for (param in params) {
+    if (param === key) {
+      params[param] = value;
+    }
+  }
+  var query = Object.keys(params)
+    .map(function (key) {
+      var value = encodeURIComponent(params[key]);
+      return key + '=' + value;
+    })
+    .join('&');
+  return query;
+}
+
 function loadImage(src, className) {
   var image = $('<img>');
   image.on('load', function () {
