@@ -11,8 +11,7 @@ COPY ./app/composer.json ./
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN composer global require hirak/prestissimo --ignore-platform-reqs \
-    && composer install --ignore-platform-reqs
+RUN composer install --ignore-platform-reqs
 COPY dockerfiles/php.ini /usr/local/etc/php/php.ini
 
 
