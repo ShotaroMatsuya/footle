@@ -23,7 +23,7 @@ services:
       # xdebug
       - ./dockerfiles/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0.30
     ports:
       - 3306:3306
     env_file:
