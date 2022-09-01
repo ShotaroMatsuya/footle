@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: dockerfiles/php.dockerfile
     volumes:
-      - /var/www/html/vendor
+      - ./app/vendor:/var/www/html/vendor
       - ./app:/var/www/html:delegated
       # xdebug
       - ./dockerfiles/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
