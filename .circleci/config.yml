@@ -19,6 +19,8 @@ jobs:
     steps:
       - checkout
       - run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
           sudo rm -rf /var/lib/apt/lists/*
           sudo apt-get update
           sudo apt-get upgrade -y
