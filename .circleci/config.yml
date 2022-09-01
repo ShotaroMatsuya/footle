@@ -8,4 +8,4 @@ jobs:
 
     steps:
       - checkout
-      - run: scp -oStrictHostKeyChecking=no -P ${DEPLOY_PORT} ~/repo/app/* ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle
+      - run: scp -oStrictHostKeyChecking=no -P ${DEPLOY_PORT} -r ~/repo/app/* ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle
