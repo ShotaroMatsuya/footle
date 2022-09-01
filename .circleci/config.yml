@@ -8,4 +8,24 @@ jobs:
 
     steps:
       - checkout
+      - run:
+          name: Update apt-get
+          command: sudo apt-get update
+      - run:
+          name: Docker php extensions install
+          command: sudo docker-php-ext-install pdo_mysql
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.json" }}
+            - v1-dependencies-
+      - run:
+          name: Install PHP libraries
+          command: |
+            cd app/
+            composer install -n --prefer-dist
+
+      - save_cache:
+          paths:
+            - app/vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
       - run: scp -oStrictHostKeyChecking=no -P ${DEPLOY_PORT} -r ~/repo/app/* ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle
