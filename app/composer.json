@@ -1,6 +1,7 @@
 {
     "require": {
-        "google/apiclient": "^2.7"
+        "google/apiclient": "~2.0",
+        "vlucas/phpdotenv": "^5.4"
     },
     "scripts": {
         "post-update-cmd": "Google\\Task\\Composer::cleanup"
