@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Update apt-get
           command: |
-            apt-get update -y
+            sudo apt-get update -y
             apt-get -y install rsync
 
       # Download and cache dependencies
