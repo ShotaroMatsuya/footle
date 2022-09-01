@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/php:7.3-fpm-node-browsers
+      - image: circleci/php:7.4-fpm-node-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -56,10 +56,10 @@ jobs:
           name: Start ssh-keyscan
           command: |
             ssh-keyscan -p ${DEPLOY_PORT} ${DEPLOY_SERVER} >> ~/.ssh/known_hosts
+      - run:
+          name: Check rsync command exists
+          command: which rsync
 
       - deploy:
           name: Start master deploy
-          command: |
-            # if [ "${CIRCLE_BRANCH}" == "master" ]; then  
-                rsync -av --delete --rsh="ssh -p ${DEPLOY_PORT}" ./app/ ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle  
-            # fi
+          command: rsync -av --delete --rsh="ssh -p ${DEPLOY_PORT}" ./app/ ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle  
