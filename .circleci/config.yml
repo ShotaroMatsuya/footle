@@ -3,8 +3,9 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.4-browsers
-  working_directory: ~/repo
 
-  steps:
-    - checkout
-    - run: scp -oStrictHostKeyChecking=no -P ${DEPLOY_PORT} ~/repo/app/* ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run: scp -oStrictHostKeyChecking=no -P ${DEPLOY_PORT} ~/repo/app/* ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle
