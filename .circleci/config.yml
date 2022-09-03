@@ -68,4 +68,7 @@ jobs:
 
       - deploy:
           name: Start master deploy
-          command: rsync -av --delete --rsh="ssh -p ${DEPLOY_PORT}" ./app/ ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle  
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then  
+              rsync -av --delete --rsh="ssh -p ${DEPLOY_PORT}" ./app/ ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle
+            fi
