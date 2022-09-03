@@ -92,13 +92,17 @@ $(document).ready(function () {
 function setParam(search, key, value) {
   var params = search.reduce(function (acc, q) {
     var key = q.split('=')[0];
-    var value = q.split('=')[1];
+    var value = q.split('=')[1] || '';
     acc[key] = decodeURIComponent(value);
     return acc;
   }, {});
   for (param in params) {
     if (param === key) {
+      // 上書き
       params[param] = value;
+    } else {
+      // 追加
+      params[key] = value;
     }
   }
   var query = Object.keys(params)
