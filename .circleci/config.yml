@@ -1,10 +1,71 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
 version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.4-browsers
-  working_directory: ~/repo
+      # specify the version you desire here
+      - image: circleci/php:7.4-fpm-node-browsers
 
-  steps:
-    - checkout
-    - run: scp -oStrictHostKeyChecking=no -P ${DEPLOY_PORT} ~/repo/app/* ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mysql:9.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
+          sudo apt-get update --allow-releaseinfo-change
+          sudo apt-get update
+          sudo apt-get upgrade -y
+          sudo apt-get install -y rsync
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "app/composer.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: Install PHP libraries
+          command: |
+            cd app/
+            composer install -n --prefer-dist
+      - run:
+          name: Create .env
+          command: |
+            cd app/
+            echo "YOUTUBE_API_KEY=${YOUTUBE_API_KEY}" >> .env
+            echo "DB_NAME=${DB_NAME}" >> .env
+            echo "DB_HOST=${DB_HOST}" >> .env
+            echo "DB_USER=${DB_USER}" >> .env
+            echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
+
+      - save_cache:
+          paths:
+            - app/vendor
+          key: v1-dependencies-{{ checksum "app/composer.json" }}
+
+      # run tests!
+      # - run: vendor/phpunit/phpunit/phpunit tests/
+
+      - add_ssh_keys:
+          fingerprints:
+            - '${KEY_FINGERPRINT}'
+
+      - run:
+          name: Start ssh-keyscan
+          command: |
+            ssh-keyscan -p ${DEPLOY_PORT} ${DEPLOY_SERVER} >> ~/.ssh/known_hosts
+      - run:
+          name: Check rsync command exists
+          command: which rsync
+
+      - deploy:
+          name: Start master deploy
+          command: rsync -av --delete --rsh="ssh -p ${DEPLOY_PORT}" ./app/ ${DEPLOY_USER}@${DEPLOY_SERVER}:~/web/footle  
