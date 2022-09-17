@@ -31,7 +31,6 @@ require_once("config.php");
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
-
           <li class="nav-item">
             <a href="admin.php" class="nav-link">
               <i class="fas fa-user-times"></i> Admin

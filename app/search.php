@@ -127,6 +127,38 @@ $num = isset($_GET["num"]) ? $_GET["num"] : 30;
             </div>
           </li>
           <?php } ?>
+          <?php if($type === 'sites'){ ?>
+          <li class="px-1">
+            <a href="<?php echo "search.php?term=onefootball&type=sites&order=$order&num=$num"; ?>"
+              class="btn btn-sm btn-outline-success">
+              OneFootball
+            </a>
+          </li>
+          <li class="px-1">
+            <a href="<?php echo "search.php?term=goal.com&type=sites&order=$order&num=$num"; ?>"
+              class="btn btn-sm btn-outline-success">
+              Goal
+            </a>
+          </li>
+          <li class="px-1">
+            <a href="<?php echo "search.php?term=transfermarkt&type=sites&order=$order&num=$num"; ?>"
+              class="btn btn-sm btn-outline-success">
+              Transfermarkt
+            </a>
+          </li>
+          <li class="px-1">
+            <a href="<?php echo "search.php?term=skysports&type=sites&order=$order&num=$num"; ?>"
+              class="btn btn-sm btn-outline-success">
+              SkySports
+            </a>
+          </li>
+          <li class="px-1">
+            <a href="<?php echo "search.php?term=bbc.com&type=sites&order=$order&num=$num"; ?>"
+              class="btn btn-sm btn-outline-success">
+              BBC
+            </a>
+          </li>
+          <?php } ?>
         </ul>
       </div>
     </div>

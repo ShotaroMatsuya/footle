@@ -200,6 +200,10 @@ body {
 .resultContainer .description {
   font-size: 12px;
 }
+.resultContainer .date {
+  color: #70757a;
+  font-size: 12px;
+}
 
 .paginationContainer {
   display: flex;

@@ -18,7 +18,7 @@ if(!preg_match($pattern, $argv[1])){
   fwrite($stdout, "$argv[1]をクローリング開始\n");
 }
 
-$validateLinksForSites =	'/\/news\/|\/Articles\/|\/News\/|www\.bbc\.com\/sport\/football\/[0-9]{3,}/';
+$validateLinksForSites =	'/\/news\/|\/Articles\/|\/News\/|\/football\/[0-9]{3,}/';
 $validateLinksForImages = '/\.jpe?g/';
 
 $alreadyCrawled = array();

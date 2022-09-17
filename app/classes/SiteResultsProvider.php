@@ -50,6 +50,7 @@ class SiteResultsProvider
             $url = $row["url"];
             $title = $row["title"];
             $description = $row["description"];
+            $created_at = $row["created_at"];
             $title = $this->trimField($title, 55);
             $description = $this->trimField($description, 230);
 
@@ -60,6 +61,7 @@ class SiteResultsProvider
                                         $title
                                     </a> 
                                 </h3>
+                                <span class='date'>$created_at</span>
                                 <span class='url'>$url</span>
                                 <span class='description'>$description</span>
                             </div>";
