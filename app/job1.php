@@ -1,6 +1,4 @@
 <?php
-set_time_limit(10);
-ini_set('max_execution_time', 10);
 include("config.php");
 include("classes/DomDocumentParser.php");
 $stdout= fopen( 'php://stdout', 'w' );
