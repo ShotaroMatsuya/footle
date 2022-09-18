@@ -15,7 +15,8 @@ jobs:
       # - image: circleci/mysql:9.4
 
     working_directory: ~/repo
-
+    branches:
+      only: master
     steps:
       - checkout
       - run: |
@@ -30,7 +31,16 @@ jobs:
             - v1-dependencies-{{ checksum "app/composer.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-
+      - run:
+          name: Install Snyk
+          command: |
+            echo Install Snyk
+            curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.210.0/snyk-linux"
+            chmod -R +x ./snyk
+            snyk config set api="${SNYK_AUTH_TOKEN}"
+            echo Build client and backend docker images for testing...
+            docker build -t shotaromatsuya/footle-nginx -f ./dockerfiles/nginx.dockerfile ./
+            docker build -t shotaromatsuya/footle-php -f ./dockerfiles/php.dockerfile ./
       - run:
           name: Install PHP libraries
           command: |
@@ -53,6 +63,26 @@ jobs:
 
       # run tests!
       # - run: vendor/phpunit/phpunit/phpunit tests/
+      - run:
+          name: Scan Docker image with Snyk
+          command: |
+            snyk test --severity-threshold=medium --docker shotaromatsuya/footle-nginx:latest --file=./dockerfiles/nginx.dockerfile
+            snyk monitor --docker shotaromatsuya/footle-nginx:latest --file=./dockerfiles/nginx.dockerfile
+            snyk test --severity-threshold=medium --docker shotaromatsuya/footle-php:latest --file=./dockerfiles/php.dockerfile
+            snyk monitor --docker shotaromatsuya/footle-php:latest --file=./dockerfiles/php.dockerfile
+      - run:
+          name: Build the Docker images
+          command: |
+            docker build -t shotaromatsuya/footle-nginx -f dockerfiles/nginx.dockerfile ./
+            docker build -t shotaromatsuya/footle-php -f dockerfiles/php.dockerfile ./
+      - run:
+          name: Log in to the Docker CLI
+          command: echo "${DOCKER_PW}" | docker login -u "${DOCKER_ID}" --password-stdin
+      - run:
+          name: Take these images and push them to DockerHub
+          command: |
+            docker push shotaromatsuya/footle-nginx
+            docker push shotaromatsuya/footle-php
 
       - add_ssh_keys:
           fingerprints:
