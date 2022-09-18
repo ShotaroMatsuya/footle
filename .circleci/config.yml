@@ -37,7 +37,7 @@ jobs:
             echo Install Snyk
             curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.210.0/snyk-linux"
             chmod -R +x ./snyk
-            snyk config set api="${SNYK_AUTH_TOKEN}"
+            ./snyk config set api="${SNYK_AUTH_TOKEN}"
             echo Build client and backend docker images for testing...
             docker build -t shotaromatsuya/footle-nginx -f ./dockerfiles/nginx.dockerfile ./
             docker build -t shotaromatsuya/footle-php -f ./dockerfiles/php.dockerfile ./
@@ -66,10 +66,10 @@ jobs:
       - run:
           name: Scan Docker image with Snyk
           command: |
-            snyk test --severity-threshold=medium --docker shotaromatsuya/footle-nginx:latest --file=./dockerfiles/nginx.dockerfile
-            snyk monitor --docker shotaromatsuya/footle-nginx:latest --file=./dockerfiles/nginx.dockerfile
-            snyk test --severity-threshold=medium --docker shotaromatsuya/footle-php:latest --file=./dockerfiles/php.dockerfile
-            snyk monitor --docker shotaromatsuya/footle-php:latest --file=./dockerfiles/php.dockerfile
+            ./snyk test --severity-threshold=medium --docker shotaromatsuya/footle-nginx:latest --file=./dockerfiles/nginx.dockerfile
+            ./snyk monitor --docker shotaromatsuya/footle-nginx:latest --file=./dockerfiles/nginx.dockerfile
+            ./snyk test --severity-threshold=medium --docker shotaromatsuya/footle-php:latest --file=./dockerfiles/php.dockerfile
+            ./snyk monitor --docker shotaromatsuya/footle-php:latest --file=./dockerfiles/php.dockerfile
       - run:
           name: Build the Docker images
           command: |
