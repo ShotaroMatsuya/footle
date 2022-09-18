@@ -15,7 +15,8 @@ jobs:
       # - image: circleci/mysql:9.4
 
     working_directory: ~/repo
-
+    branches:
+      only: master
     steps:
       - checkout
       - run: |
