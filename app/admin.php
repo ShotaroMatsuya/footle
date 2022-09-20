@@ -129,6 +129,13 @@ $username = $_SESSION["username"];
                       FootBallNews.net
                     </label>
                   </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="radio" name="crawlSite" class="form-check-input"
+                        value="https://www.transfermarkt.com/">
+                      transfermarkt
+                    </label>
+                  </div>
                   <div class="input-group my-3">
                     <button type="submit" class="btn btn-primary btn-lg" id="crawlBtn1" disabled>let' crawling!</button>
                   </div>

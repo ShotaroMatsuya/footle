@@ -1,3 +1,5 @@
+[![Known Vulnerabilities](https://snyk.io/test/github/ShotaroMatsuya/footle/badge.svg)](https://snyk.io/test/github/ShotaroMatsuya/footle)
+
 # バックアップ
 
 ```bash
@@ -36,4 +38,18 @@ mysql > SHOW GRANTS FOR 'your-user';
 
 ```bash
 ./watchdog.sh 300 php job1.php <url>
+```
+
+## login
+
+public repository への認証トークン更新
+
+```bash
+aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+```
+
+ECR private repository の認証トークン更新
+
+```bash
+aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 528163014577.dkr.ecr.ap-northeast-1.amazonaws.com
 ```
