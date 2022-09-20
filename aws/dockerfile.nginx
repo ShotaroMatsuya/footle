@@ -1,0 +1,12 @@
+FROM public.ecr.aws/nginx/nginx:1.20-alpine
+
+WORKDIR /etc/nginx/conf.d
+
+COPY aws/nginx.conf .
+
+# rename
+RUN mv nginx.conf default.conf
+
+WORKDIR /var/www/html
+
+COPY app .
