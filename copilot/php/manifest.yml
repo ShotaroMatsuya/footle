@@ -1,0 +1,59 @@
+# The manifest for the "php" service.
+# Read the full specification for the "Load Balanced Web Service" type at:
+#  https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/
+
+# Your service name will be used in naming your resources like log groups, ECS services, etc.
+name: php
+type: Load Balanced Web Service
+
+# Distribute traffic to your service.
+http:
+  # Requests to this path will be forwarded to your service.
+  # To match all requests you can use the "/" path.
+  path: '/'
+  alias: footle.smat710.tk
+  # You can specify a custom health check path. The default is "/".
+  healthcheck:
+    path: '/'
+    success_code: '200'
+  target_container: 'nginx'
+
+# Configuration for your containers and service.
+image:
+  # Docker build arguments. For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#image-build
+  build:
+    dockerfile: aws/dockerfile.php
+    context: .
+  # Port exposed through your container to route traffic to it.
+  port: 9000
+
+cpu: 256 # Number of CPU units for the task.
+memory: 512 # Amount of memory in MiB used by the task.
+count: 1 # Number of tasks that should be running in your service.
+exec: true # Enable running commands in your container.
+
+# Optional fields for more advanced use-cases.
+#
+#variables:                    # Pass environment variables as key value pairs.
+#  LOG_LEVEL: info
+
+#secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
+#  GITHUB_TOKEN: GITHUB_TOKEN  # The key is the name of the environment variable, the value is the name of the SSM parameter.
+secrets:
+  DB_NAME: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/db_name
+  DB_PASSWORD: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/db_password
+  DB_USER: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/db_user
+  DB_HOST: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/db_host
+# You can override any of the values defined above by environment.
+#environments:
+#  test:
+#    count: 2               # Number of tasks to run for the "test" environment.
+#    deployment:            # The deployment strategy for the "test" environment.
+#       rolling: 'recreate' # Stops existing tasks before new ones are started for faster deployments.
+sidecars:
+  nginx:
+    port: 80
+    image: 528163014577.dkr.ecr.ap-northeast-1.amazonaws.com/footle/nginx
+# logging:
+#   image:
+#   configFilePath: '/fluent-bit/etc/fluent-bit_custom.conf'
