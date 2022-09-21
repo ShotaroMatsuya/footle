@@ -1,5 +1,10 @@
 # Buildspec runs in the build stage of your pipeline.
 version: 0.2
+env:
+  secrets-manager:
+    DOCKERHUB_USER: arn:aws:secretsmanager:ap-northeast-1:528163014577:secret:dockerhub-JevjVg:username
+    DOCKERHUB_PASS: arn:aws:secretsmanager:ap-northeast-1:528163014577:secret:dockerhub-JevjVg:password
+
 phases:
   install:
     runtime-versions:
@@ -12,6 +17,12 @@ phases:
       - wget -q https://ecs-cli-v2-release.s3.amazonaws.com/copilot-linux-v1.21.1
       - mv ./copilot-linux-v1.21.1 ./copilot-linux
       - chmod +x ./copilot-linux
+      # ECR へのログイン
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      # Docker Hub へのログイン
+      - echo Logging in to Docker Hub...
+      - echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin
   build:
     commands:
       - echo "Run your tests"
@@ -68,4 +79,4 @@ phases:
       - ls -lah ./infrastructure
 artifacts:
   files:
-    - "infrastructure/*"
+    - 'infrastructure/*'
