@@ -13,6 +13,8 @@ COPY dockerfiles/www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
 
 
 COPY app .
+COPY app/.env.default ./
+RUN mv .env.default .env
 
 RUN docker-php-ext-install pdo pdo_mysql
 
