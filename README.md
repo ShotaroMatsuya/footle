@@ -57,7 +57,7 @@ aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS
 ## app init
 
 ```bash
-copilot app init footle --domain smat710.tk
+copilot app init footle
 ```
 
 ## env init & deploy
@@ -102,6 +102,5 @@ copilot pipeline init --name
 ## clean up resources
 
 ```bash
-
 copilot app delete
 ```

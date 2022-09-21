@@ -1,0 +1,13 @@
+name: footle-copilot
+
+version: 1
+
+source:
+  provider: GitHub
+  properties:
+    branch: master
+    repository: https://github.com/ShotaroMatsuya/footle
+
+stages:
+  - # The name of the environment.
+    name: prod
