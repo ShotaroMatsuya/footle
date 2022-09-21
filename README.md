@@ -53,3 +53,54 @@ ECR private repository の認証トークン更新
 ```bash
 aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 528163014577.dkr.ecr.ap-northeast-1.amazonaws.com
 ```
+
+## app init
+
+```bash
+copilot app init footle
+```
+
+## env init & deploy
+
+```bash
+copilot env init --name prod
+copilot env deploy --name prod
+```
+
+## secret init
+
+```bash
+copilot secret init --cli-input-yaml env/mysql.yaml
+```
+
+## svc init & deploy
+
+```bash
+copilot svc init --name mysql
+copilot svc deploy --name mysql --env prod
+```
+
+```bash
+copilot svc init --name php
+copilot svc deploy --name php --env prod
+```
+
+## job init & deploy
+
+```bash
+copilot job init --name crawling
+copilot job deploy --name crawling --env prod
+```
+
+## pipeline init & deploy
+
+```bash
+copilot pipeline init --name
+
+```
+
+## clean up resources
+
+```bash
+copilot app delete
+```

@@ -1,34 +1,19 @@
-name: php
-type: Load Balanced Web Service
-
-http:
-  path: '/'
-  healthcheck:
-    path: '/'
-    success_code: '200'
-    port: 80
-  target_container: 'nginx'
-
+name: crawling
+type: Scheduled Job
+on:
+  # 毎週月曜日の午前10:00に起動
+  schedule: '0 1 * * 1'
+retries: 3 # Optional. The number of times to retry the job before failing.
+timeout: 10m # Optional. The timeout after which to stop the job if it's still running. You can use the units (h, m, s).
 image:
   build:
-    dockerfile: aws/dockerfile.php
+    dockerfile: aws/dockerfile.job
     context: .
-  port: 9000
-
 cpu: 256 # Number of CPU units for the task.
 memory: 512 # Amount of memory in MiB used by the task.
-count: 1 # Number of tasks that should be running in your service.
-exec: true # Enable running commands in your container.
 
 secrets:
   DB_NAME: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/db_name
   DB_PASSWORD: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/db_password
   DB_USER: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/db_user
   DB_HOST: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/db_host
-sidecars:
-  nginx:
-    port: 80
-    image: 528163014577.dkr.ecr.ap-northeast-1.amazonaws.com/footle/nginx
-# logging:
-#   image:
-#   configFilePath: '/fluent-bit/etc/fluent-bit_custom.conf'

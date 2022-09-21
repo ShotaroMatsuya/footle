@@ -1,20 +1,9 @@
-# The manifest for the "mysql" service.
-# Read the full specification for the "Backend Service" type at:
-#  https://aws.github.io/copilot-cli/docs/manifest/backend-service/
-
-# Your service name will be used in naming your resources like log groups, ECS services, etc.
 name: mysql
 type: Backend Service
-
-# Your service does not allow any traffic.
-
-# Configuration for your containers and service.
 image:
-  # Docker build arguments. For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#image-build
   build:
     dockerfile: aws/dockerfile.mysql
     context: .
-  # Port exposed through your container to route traffic to it.
   port: 3306
 
 command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --default-time-zone=Asia/Tokyo
@@ -24,24 +13,7 @@ memory: 512 # Amount of memory in MiB used by the task.
 count: 1 # Number of tasks that should be running in your service.
 exec: true # Enable running commands in your container.
 env_file: ./env/mysql.env
-# Optional fields for more advanced use-cases.
-#
-# variables: # Pass environment variables as key value pairs.
-#   LOG_LEVEL: info
 
-#secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
-#  GITHUB_TOKEN: GITHUB_TOKEN  # The key is the name of the environment variable, the value is the name of the SSM parameter.
-
-# You can override any of the values defined above by environment.
-# environments:
-#   MYSQL_DATABASE: ****
-#   MYSQL_USER: ****
-#   MYSQL_PASSWORD: ****
-#   MYSQL_ROOT_PASSWORD: ****
-#  test:
-#    count: 2               # Number of tasks to run for the "test" environment.
-#    deployment:            # The deployment strategy for the "test" environment.
-#       rolling: 'recreate' # Stops existing tasks before new ones are started for faster deployments.
 storage:
   volumes:
     mysql-data:

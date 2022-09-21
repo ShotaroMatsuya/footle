@@ -3,3 +3,6 @@ env/*.sql
 # .vscode/
 app/assets/images/image/*
 .env
+TODO
+.dccache
+env/mysql.yaml
