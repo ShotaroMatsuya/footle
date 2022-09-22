@@ -1,23 +1,22 @@
+FROM composer:2 as composer_build
+
+COPY ./app/composer.* /app/
+
+RUN composer install -n --prefer-dist
+COPY ./app /app
+
 FROM php:7.4-fpm-alpine
-
-WORKDIR /var/www/html
-
-COPY ./app/composer.json ./
-
-COPY --from=composer:2  /usr/bin/composer /usr/bin/composer
-
-RUN composer install --ignore-platform-reqs
 # 設定ファイルを指定の場所に置く
 COPY dockerfiles/php.ini /usr/local/etc/php/php.ini
-COPY dockerfiles/www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
-
-
-COPY app .
-COPY app/.env.default ./
-RUN mv .env.default .env
+COPY dockerfiles/zzz-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN chown -R www-data:www-data /var/www/html
+WORKDIR /var/www/html
 
-CMD (./watchdog.sh 300 php job1.php https://www.goal.com/en/ &) && (./watchdog.sh 300 php job1.php https://onefootball.com/en/home &) && (./watchdog.sh 300 php job1.php https://www.bbc.com/sport/football &) && (./watchdog.sh 300 php job1.php https://www.skysports.com/football/news &) && (./watchdog.sh 300 php job1.php https://talksport.com/football/ &) && (./watchdog.sh 300 php job1.php https://www.transfermarkt.com/ &)
+COPY --from=composer_build /usr/bin/composer /usr/bin/composer
+COPY --chown=www-data --from=composer_build /app/ ./
+
+RUN chmod 755 ./startup.sh
+
+CMD ["./startup.sh"]
