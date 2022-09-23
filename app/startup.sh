@@ -1,0 +1,2 @@
+#!/bin/sh
+(./watchdog.sh 300 php job1.php https://www.goal.com/en/ &) && (./watchdog.sh 300 php job1.php https://onefootball.com/en/home &) && (./watchdog.sh 300 php job1.php https://www.bbc.com/sport/football &) && (./watchdog.sh 300 php job1.php https://www.skysports.com/football/news &) && (./watchdog.sh 300 php job1.php https://talksport.com/football/ &) && (./watchdog.sh 300 php job1.php https://www.transfermarkt.com/ &)

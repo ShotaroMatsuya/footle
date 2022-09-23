@@ -1,0 +1,8 @@
+{
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "bash",
+      "args": ["-l"]
+    }
+  }
+}
