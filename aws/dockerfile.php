@@ -13,6 +13,8 @@ COPY dockerfiles/zzz-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
 RUN docker-php-ext-install pdo pdo_mysql
 
 WORKDIR /var/www/html
+# .envをリネーム
+COPY ./app/.env.default ./env
 
 COPY --from=composer_build /usr/bin/composer /usr/bin/composer
 COPY --chown=www-data --from=composer_build /app/ ./
