@@ -6,3 +6,4 @@ app/assets/images/image/*
 TODO
 .dccache
 env/mysql.yaml
+startup-copy.sh
