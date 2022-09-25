@@ -1,8 +1,8 @@
 name: crawling
 type: Scheduled Job
 on:
-  # 毎週月曜日の午前10:00に起動
-  schedule: '0 1 * * 1'
+  # 毎週月曜日の13:00に起動
+  schedule: '0 4 * * 1'
 retries: 3 # Optional. The number of times to retry the job before failing.
 timeout: 10m # Optional. The timeout after which to stop the job if it's still running. You can use the units (h, m, s).
 image:
