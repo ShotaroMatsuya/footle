@@ -40,5 +40,14 @@ services:
       dockerfile: composer.dockerfile
     volumes:
       - ./app:/var/www/html
+  job:
+    build:
+      context: .
+      dockerfile: aws/dockerfile.job
+    volumes:
+      - ./app/vendor:/var/www/html/vendor
+      - ./app:/var/www/html:delegated
+    stdin_open: true
+    tty: true
 volumes:
   data:
