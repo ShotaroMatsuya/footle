@@ -30,6 +30,7 @@ CREATE TABLE `images` (
   `title` varchar(512) NOT NULL,
   `clicks` int(11) NOT NULL DEFAULT '0',
   `broken` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12084 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
