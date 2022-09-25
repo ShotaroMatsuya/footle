@@ -35,7 +35,7 @@ class ImageResultsProvider
                                         WHERE (title LIKE :term 
                                         OR alt LIKE :term)
                                         AND broken=0
-                                        ORDER BY $order  DESC
+                                        ORDER BY $order DESC, created_at  DESC
                                         LIMIT :fromLimit, :pageSize");
         $searchTerm = "%" . $term . "%";
         $query->bindParam(":term", $searchTerm);

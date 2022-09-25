@@ -34,7 +34,7 @@ class SiteResultsProvider
                                         OR url LIKE :term 
                                         OR keywords LIKE :term 
                                         OR description LIKE :term
-                                        ORDER BY $order DESC
+                                        ORDER BY $order DESC , created_at DESC
                                         LIMIT :fromLimit, :pageSize");
         $searchTerm = "%" . $term . "%";
         $query->bindParam(":term", $searchTerm);
