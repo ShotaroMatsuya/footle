@@ -1,5 +1,9 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/ShotaroMatsuya/footle/badge.svg)](https://snyk.io/test/github/ShotaroMatsuya/footle)
 
+# AWS Architecture
+
+![infrastructure](/footle.drawio.png)
+
 # バックアップ
 
 ```bash
@@ -104,7 +108,3 @@ copilot pipeline init --name
 ```bash
 copilot app delete
 ```
-
-# AWS Architecture
-
-![infrastructure](/footle.drawio.png)
