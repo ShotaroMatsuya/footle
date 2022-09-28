@@ -1,4 +1,6 @@
-[![Known Vulnerabilities](https://snyk.io/test/github/ShotaroMatsuya/footle/badge.svg)](https://snyk.io/test/github/ShotaroMatsuya/footle)
+[![Known Vulnerabilities](https://snyk.io/test/github/ShotaroMatsuya/footle/badge.svg?targetFile=/aws/dockerfile.mysql)](https://snyk.io/test/github/ShotaroMatsuya/footle)
+[![Known Vulnerabilities](https://snyk.io/test/github/ShotaroMatsuya/footle/badge.svg?targetFile=/aws/dockerfile.php)](https://snyk.io/test/github/ShotaroMatsuya/footle)
+[![Known Vulnerabilities](https://snyk.io/test/github/ShotaroMatsuya/footle/badge.svg?targetFile=/aws/dockerfile.nginx)](https://snyk.io/test/github/ShotaroMatsuya/footle)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/ShotaroMatsuya/footle/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/ShotaroMatsuya/footle/tree/master)
 
 # AWS Architecture
