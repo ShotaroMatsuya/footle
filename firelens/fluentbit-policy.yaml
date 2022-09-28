@@ -1,0 +1,28 @@
+Resources:
+  Type: AWS::IAM::ManagedPolicy
+  Properties:
+    PolicyDocument:
+      Version: '2017-10-17'
+      Statement:
+        - Effect: Allow
+          Action:
+            - 's3:AbortMultipartUpload'
+            - 's3:GetBucketLocation'
+            - 's3:GetObject'
+            - 's3:ListBucket'
+            - 's3:ListBucketMultipartUploads'
+            - 's3:PutObject'
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - 'kms:Decrypt'
+            - 'kms:GenerateDataKey'
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - 'logs:CreateLogGroup'
+            - 'logs:CreateLogStream'
+            - 'logs:DescribeLogGroups'
+            - 'logs:DescribeLogStreams'
+            - 'logs:PutLogEvents'
+          Resource: '*'
