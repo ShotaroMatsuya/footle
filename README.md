@@ -104,3 +104,7 @@ copilot pipeline init --name
 ```bash
 copilot app delete
 ```
+
+# AWS Architecture
+
+![infrastructure](/footle.drawio.png)
