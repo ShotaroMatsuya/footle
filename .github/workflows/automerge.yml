@@ -1,0 +1,54 @@
+name: automerge
+on:
+  pull_request:
+    types: [labeled]
+jobs:
+  automerge:
+    if: github.event.label.name == 'automerge'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Extract branch name
+        uses: mdecoleman/pr-branch-name@1.0.0
+        id: extract_branch
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract tag name
+        shell: bash
+        run: |
+          branch=${{ steps.extract_branch.outputs.branch }}
+          echo "##[set-output name=tag;]$(echo ${branch#release-})"
+        id: extract_tag
+      - name: Merge
+        if: startsWith(steps.extract_branch.outputs.branch, 'release')
+        uses: yanamura/git-flow-merge-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ steps.extract_branch.outputs.branch }}
+          tag: v${{ steps.extract_tag.outputs.tag }}
+          main_branch: 'master'
+      - name: Get body from PullRequest
+        id: pr-body
+        uses: actions/github-script@v2
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: |
+            const result = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            })
+            return result.data.body
+      - name: Create ReleaseNote
+        if: startsWith(steps.extract_branch.outputs.branch, 'release')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.extract_tag.outputs.tag }}
+          release_name: Release ${{ steps.extract_tag.outputs.tag }}
+          body: |
+            ${{ steps.pr-body.outputs.result }}
+          draft: false
+          prerelease: false
