@@ -1,8 +1,9 @@
 {
-    "workbench.colorCustomizations": {
-        "titleBar.activeBackground": "#00ff73",
-        "titleBar.activeForeground": "#000000",
-        "activityBar.background": "#00ff73",
-        "activityBar.foreground": "#000000"
-    }
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#00ff73",
+    "titleBar.activeForeground": "#000000",
+    "activityBar.background": "#00ff73",
+    "activityBar.foreground": "#000000"
+  },
+  "githubPullRequests.ignoredPullRequestBranches": ["master"]
 }
