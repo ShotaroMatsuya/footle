@@ -48,6 +48,7 @@ CREATE TABLE `sites` (
   `title` varchar(512) NOT NULL,
   `description` varchar(512) NOT NULL,
   `keywords` varchar(512) NOT NULL,
+  `thumbnailImageLink` varchar(512) NOT NULL DEFAULT '',
   `clicks` int(11) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (`id`)
