@@ -1,19 +1,19 @@
 <?php
 include("config.php");
 include("classes/DomDocumentParser.php");
-$stdout= fopen( 'php://stdout', 'w' );
-$stderr = fopen( 'php://stderr', 'w' );
+$stdout = fopen('php://stdout', 'w');
+$stderr = fopen('php://stderr', 'w');
 
-if($argc > 2 || $argc < 2){
-  echo "引数を一つだけ指定してください";
-  exit(0);
+if ($argc > 2 || $argc < 2) {
+	echo "引数を一つだけ指定してください";
+	exit(0);
 }
 $pattern = '/https?:\/{2}[\w\/:%#\$&\?\(\)~\.=\+\-]+/';
-if(!preg_match($pattern, $argv[1])){
-  echo "有効なURLを入力してください";
-  exit(0);
+if (!preg_match($pattern, $argv[1])) {
+	echo "有効なURLを入力してください";
+	exit(0);
 } else {
-  fwrite($stdout, "$argv[1]をクローリング開始\n");
+	fwrite($stdout, "$argv[1]をクローリング開始\n");
 }
 
 $validateLinksForSites =	'/\/news\/|\/Articles\/|\/News\/|\/football\/[0-9]{3,}/';
@@ -38,10 +38,10 @@ function insertLink($url, $title, $description, $keywords)
 	global $validateLinksForSites;
 	global $stdout;
 
-	if(preg_match($validateLinksForSites, $url) !== 1){
-		fwrite( $stdout, "ERROR(sites): keyword isn\'t included in $url\n" );
+	if (preg_match($validateLinksForSites, $url) !== 1) {
+		fwrite($stdout, "ERROR(sites): keyword isn\'t included in $url\n");
 		return false;
-	} 
+	}
 
 	$query = $con->prepare("INSERT INTO sites(url, title, description, keywords)
 							VALUES(:url, :title, :description, :keywords)");
@@ -59,8 +59,8 @@ function insertImage($url, $src, $alt, $title)
 	global $con;
 	global $validateLinksForImages;
 	global $stdout;
-	if(preg_match($validateLinksForImages, $src) !== 1){
-		fwrite( $stdout, "ERROR(images): $src doesn\'t end with the extension \n" );
+	if (preg_match($validateLinksForImages, $src) !== 1) {
+		fwrite($stdout, "ERROR(images): $src doesn\'t end with the extension \n");
 		return false;
 	}
 
@@ -147,18 +147,18 @@ function getDetails($url)
 			continue;
 		}
 		$mimeType = $info["mime"];
-		if($mimeType !== "image/jpeg" ){
+		if ($mimeType !== "image/jpeg") {
 			fwrite($stdout, "ERROR(images): Image extension is not jpeg INFO($mimeType)\n");
 			continue;
 		}
 		if (!in_array($src, $alreadyFoundImages)) {
 			$alreadyFoundImages[] = $src;
-			if(insertImage($url, $src, $alt, $title)){
-				fwrite( $stdout,"SUCCESS(images) : $src\n" );
-			}else {
+			if (insertImage($url, $src, $alt, $title)) {
+				fwrite($stdout, "SUCCESS(images) : $src\n");
+			} else {
 				fwrite($stdout, "ERROR(images): Failed to insert $url\n");
 			}
-		}else {
+		} else {
 			fwrite($stdout, "ERROR(images): Already exists images $src\n");
 		}
 	}
@@ -170,7 +170,7 @@ function followLinks($url)
 	global $crawling;
 	global $stdout;
 	global $validateLinksForSites;
-	
+
 	$parser = new DomDocumentParser($url);
 	$linkList = $parser->getLinks();
 	foreach ($linkList as $link) {
@@ -182,10 +182,11 @@ function followLinks($url)
 		} else {
 			$href = strtok($href, "?");
 		}
-		
+
 		$href = createLink($href, $url);
-		if (!in_array($href, $alreadyCrawled) 
-		&& preg_match($validateLinksForSites, $href) === 1
+		if (
+			!in_array($href, $alreadyCrawled)
+			&& preg_match($validateLinksForSites, $href) === 1
 		) {
 			$alreadyCrawled[] = $href;
 			$crawling[] = $href;
@@ -199,5 +200,5 @@ function followLinks($url)
 }
 $startUrl = $argv[1];
 followLinks($startUrl);
-fwrite($stdout,"グローリング終了\n");
+fwrite($stdout, "グローリング終了\n");
 exit(0);

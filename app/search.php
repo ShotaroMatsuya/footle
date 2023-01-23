@@ -6,9 +6,9 @@ require_once("classes/ImageResultsProvider.php");
 
 
 if (isset($_GET["term"])) {
-    $term = $_GET["term"];
+  $term = $_GET["term"];
 } else {
-    exit("You must enter a search term");
+  exit("You must enter a search term");
 }
 $type = isset($_GET["type"]) ? $_GET["type"] : "sites";
 $page = isset($_GET["page"]) ? $_GET["page"] : 1;
@@ -91,35 +91,35 @@ $num = isset($_GET["num"]) ? $_GET["num"] : 30;
           <li class="<?php echo $type == 'wiki' ? 'active' : '' ?>">
             <a href='<?php echo "search.php?term=$term&type=wiki&order=$order&num=$num"; ?>'>Wikipedia</a>
           </li>
-          <?php 
-            if($order === 'random' && ($type === 'sites' || $type === 'images')){
-            ?>
+          <?php
+          if ($order === 'random' && ($type === 'sites' || $type === 'images')) {
+          ?>
           <li>
             <button type="button" id="random-toggle" class="btn btn-outline-danger active"
               style="padding: revert;"><span class="material-icons" style="line-height: unset;">shuffle</span></button>
           </li>
-          <?php 
-            }elseif($order === 'clicks' && $type === 'sites' || $type ==='images'){
-            ?>
+          <?php
+          } elseif ($order === 'clicks' && $type === 'sites' || $type === 'images') {
+          ?>
           <li>
             <button type="button" id="random-toggle" class="btn btn-outline-danger" style="padding: revert;"><span
                 class="material-icons" style="line-height: unset;">shuffle</span></button>
           </li>
           <?php } ?>
-          <?php if($type === 'sites' || $type === 'images'){ ?>
+          <?php if ($type === 'sites' || $type === 'images') { ?>
           <li>
             <div class="input-group">
               <select class="custom-select" id="num-per-page" name="num">
-                <option value="10" <?= $num === '10' ? 'selected': ''  ?>>10件</option>
-                <option value="20" <?= $num === '20' ? 'selected': ''  ?>>20件</option>
-                <option value="30" <?= $num === '30' ? 'selected': ''  ?>>30件</option>
-                <option value="40" <?= $num === '40' ? 'selected': ''  ?>>40件</option>
-                <option value="50" <?= $num === '50' ? 'selected': ''  ?>>50件</option>
-                <option value="100" <?= $num === '100' ? 'selected': ''  ?>>100件</option>
-                <option value="200" <?= $num === '200' ? 'selected': ''  ?>>200件</option>
-                <option value="300" <?= $num === '300' ? 'selected': ''  ?>>300件</option>
-                <option value="500" <?= $num === '500' ? 'selected': ''  ?>>500件</option>
-                <option value="1000" <?= $num === '1000' ? 'selected': ''  ?>>1000件</option>
+                <option value="10" <?= $num === '10' ? 'selected' : ''  ?>>10件</option>
+                <option value="20" <?= $num === '20' ? 'selected' : ''  ?>>20件</option>
+                <option value="30" <?= $num === '30' ? 'selected' : ''  ?>>30件</option>
+                <option value="40" <?= $num === '40' ? 'selected' : ''  ?>>40件</option>
+                <option value="50" <?= $num === '50' ? 'selected' : ''  ?>>50件</option>
+                <option value="100" <?= $num === '100' ? 'selected' : ''  ?>>100件</option>
+                <option value="200" <?= $num === '200' ? 'selected' : ''  ?>>200件</option>
+                <option value="300" <?= $num === '300' ? 'selected' : ''  ?>>300件</option>
+                <option value="500" <?= $num === '500' ? 'selected' : ''  ?>>500件</option>
+                <option value="1000" <?= $num === '1000' ? 'selected' : ''  ?>>1000件</option>
               </select>
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary" id="per-page" type="button">/ PAGE</button>
@@ -127,7 +127,7 @@ $num = isset($_GET["num"]) ? $_GET["num"] : 30;
             </div>
           </li>
           <?php } ?>
-          <?php if($type === 'sites'){ ?>
+          <?php if ($type === 'sites') { ?>
           <li class="px-1">
             <a href="<?php echo "search.php?term=onefootball&type=sites&order=$order&num=$num"; ?>"
               class="btn btn-sm btn-outline-success">
@@ -164,64 +164,64 @@ $num = isset($_GET["num"]) ? $_GET["num"] : 30;
     </div>
     <div class="mainResultsSection">
       <?php
-        if ($type == "sites") {
-          $resultsProvider = new SiteResultsProvider($con);
-          $pageSize =(int)$num;
-          $numResults = (int)$resultsProvider->getNumResults($term);
+      if ($type == "sites") {
+        $resultsProvider = new SiteResultsProvider($con);
+        $pageSize = (int)$num;
+        $numResults = (int)$resultsProvider->getNumResults($term);
 
-          $offset = null;
-          if((int)$page === 1){
-              $offset= 1;
-          }else{
-              $offset = ($page - 1) * $pageSize;
-          }
+        $offset = null;
+        if ((int)$page === 1) {
+          $offset = 1;
+        } else {
+          $offset = ($page - 1) * $pageSize;
+        }
 
-          $end = $page * $pageSize;
+        $end = $page * $pageSize;
 
-          if($end > $numResults ){
-              $end = $numResults;
-          }
+        if ($end > $numResults) {
+          $end = $numResults;
+        }
 
-          if($numResults == 0){
-              $offset = 0;
-          }
+        if ($numResults == 0) {
+          $offset = 0;
+        }
 
-          echo "<p class='resultsCount'>$numResults results found. ($offset ~ $end)</p>";
+        echo "<p class='resultsCount'>$numResults results found. ($offset ~ $end)</p>";
 
-          echo $resultsProvider->getResultsHtml($page, $pageSize, $term, $order);
-        } elseif ($type == "images") {
-          $resultsProvider = new ImageResultsProvider($con);
-          $pageSize = (int)$num;
-          $numResults = $resultsProvider->getNumResults($term);
+        echo $resultsProvider->getResultsHtml($page, $pageSize, $term, $order);
+      } elseif ($type == "images") {
+        $resultsProvider = new ImageResultsProvider($con);
+        $pageSize = (int)$num;
+        $numResults = $resultsProvider->getNumResults($term);
 
-          $offset = null;
-          if((int)$page === 1){
-              $offset= 1;
-          }else{
-              $offset = ($page - 1) * $pageSize;
-          }
+        $offset = null;
+        if ((int)$page === 1) {
+          $offset = 1;
+        } else {
+          $offset = ($page - 1) * $pageSize;
+        }
 
-          $end = $page * $pageSize;
-          if($end > $numResults ){
-              $end = $numResults;
-          }
+        $end = $page * $pageSize;
+        if ($end > $numResults) {
+          $end = $numResults;
+        }
 
-          if($numResults == 0){
-              $offset = 0;
-          }
+        if ($numResults == 0) {
+          $offset = 0;
+        }
 
-          echo "<p class='resultsCount'>$numResults results found. ($offset ~ $end)</p>";
+        echo "<p class='resultsCount'>$numResults results found. ($offset ~ $end)</p>";
 
-          echo $resultsProvider->getResultsHtml($page, $pageSize, $term, $order);
-        } elseif ($type == "movies") {
-          echo '<div class="siteResults"></div>';
-        } elseif ($type == "wiki") {
-          echo '
+        echo $resultsProvider->getResultsHtml($page, $pageSize, $term, $order);
+      } elseif ($type == "movies") {
+        echo '<div class="siteResults"></div>';
+      } elseif ($type == "wiki") {
+        echo '
           <p class="resultsCount"></p>
           <div class="siteResults">
           <div class="resultContainer"></div>
           </div>';
-        }
+      }
       ?>
 
     </div>
@@ -239,29 +239,29 @@ $num = isset($_GET["num"]) ? $_GET["num"] : 30;
           // ループ開始地点の設定
           $currentPage = $page - floor($pagesToShow / 2); /*小数点切り下げ 　ループ開始地点*/
           if ($currentPage < 1) {  /*ページ数が5より少ないときのループ開始地点は1から */
-              $currentPage = 1;
+            $currentPage = 1;
           }
           if ($currentPage + $pagesLeft > $numPages + 1) {  /* ページmax付近でのループ開始地点 */
-              $currentPage = $numPages + 1 - $pagesLeft;
+            $currentPage = $numPages + 1 - $pagesLeft;
           }
 
           while ($pagesLeft != 0 && $currentPage <= $numPages) { /*currentPageを増やし、pagesLeftをへらす */
-              if ($currentPage == $page) {
-                  echo "<div class='pageNumberContainer'>
+            if ($currentPage == $page) {
+              echo "<div class='pageNumberContainer'>
                       <img src='assets/images/pageSelected.png'>
                       <span class='pageNumber'>$currentPage</span>
 
                   </div>";
-              } else {
-                  echo "<div class='pageNumberContainer'>
+            } else {
+              echo "<div class='pageNumberContainer'>
                       <a href='search.php?term=$term&type=$type&page=$currentPage&order=$order&num=$num'>
                           <img src='assets/images/page.png'>
                           <span class='pageNumber'>$currentPage</span>
                       </a>
                   </div>";
-              }
-              $currentPage++;
-              $pagesLeft--;
+            }
+            $currentPage++;
+            $pagesLeft--;
           } ?>
         <div class="pageNumberContainer">
           <img src="assets/images/pageEnd.png">
