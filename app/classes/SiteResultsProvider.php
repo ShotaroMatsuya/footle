@@ -25,7 +25,7 @@ class SiteResultsProvider
         //page 1 : (1 - 1) * 20 :0
         //page 2 : (2 - 1) * 20 :20
         //page 3 : (3 - 1) * 20 :40
-        if($order === 'random'){
+        if ($order === 'random') {
             $order = 'RAND()';
         }
 
@@ -34,7 +34,7 @@ class SiteResultsProvider
                                         OR url LIKE :term 
                                         OR keywords LIKE :term 
                                         OR description LIKE :term
-                                        ORDER BY $order DESC , created_at DESC
+                                        ORDER BY created_at DESC ,$order DESC
                                         LIMIT :fromLimit, :pageSize");
         $searchTerm = "%" . $term . "%";
         $query->bindParam(":term", $searchTerm);
