@@ -48,4 +48,8 @@ class DomDocumentParser
 	{
 		return $this->doc->getElementsByTagName("img");
 	}
+	public function getLinkTags()
+	{
+		return $this->doc->getElementsByTagName("link");
+	}
 }
