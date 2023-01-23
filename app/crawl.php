@@ -1,8 +1,8 @@
 <?php
 include("config.php");
 include("classes/DomDocumentParser.php");
-$stdout= fopen( 'php://stdout', 'w' );
-$stderr = fopen( 'php://stderr', 'w' );
+$stdout = fopen('php://stdout', 'w');
+$stderr = fopen('php://stderr', 'w');
 
 if (!isset($_SESSION["username"])) {
 	header("Location: login.php");
@@ -10,7 +10,7 @@ if (!isset($_SESSION["username"])) {
 
 if (!isset($_POST["crawlSite"]) || $_POST["crawlSite"] == "") {
 	echo "<h1>No Link Passed to page</h1>";
-	fwrite( $stderr, "No Link Passed to page\n" );
+	fwrite($stderr, "No Link Passed to page\n");
 	exit;
 }
 
@@ -32,24 +32,25 @@ function linkExists($url) //urlのduplicateを防ぐ
 	return $query->rowCount() != 0;
 }
 
-function insertLink($url, $title, $description, $keywords) //sitesテーブルにinsert
+function insertLink($url, $title, $description, $keywords, $thumbnailImageLink) //sitesテーブルにinsert
 {
 	global $con;
 	global $validateLinksForSites;
 	global $stdout;
 
-	if(preg_match($validateLinksForSites, $url) !== 1){
-		fwrite( $stdout, "ERROR(sites): keyword isn\'t included in $url\n" );
+	if (preg_match($validateLinksForSites, $url) !== 1) {
+		fwrite($stdout, "ERROR(sites): keyword isn\'t included in $url\n");
 		return false;
-	} 
+	}
 
-	$query = $con->prepare("INSERT INTO sites(url, title, description, keywords)
-							VALUES(:url, :title, :description, :keywords)");
+	$query = $con->prepare("INSERT INTO sites(url, title, description, keywords, thumbnailImageLink)
+							VALUES(:url, :title, :description, :keywords, :thumbnailImageLink)");
 
 	$query->bindParam(":url", $url);
 	$query->bindParam(":title", $title);
 	$query->bindParam(":description", $description);
 	$query->bindParam(":keywords", $keywords);
+	$query->bindParam(":thumbnailImageLink", $thumbnailImageLink);
 
 	return $query->execute();
 }
@@ -67,9 +68,9 @@ function insertImage($url, $src, $alt, $title) //imagesテーブルにinsert
 	global $con;
 	global $validateLinksForImages;
 	global $stdout;
-	
-	if(preg_match($validateLinksForImages, $src) !== 1){
-		fwrite( $stdout, "ERROR(images): $src doesn\'t end with the extension \n" );
+
+	if (preg_match($validateLinksForImages, $src) !== 1) {
+		fwrite($stdout, "ERROR(images): $src doesn\'t end with the extension \n");
 		return false;
 	}
 
@@ -120,9 +121,10 @@ function getDetails($url)
 	if ($siteTitle == "") {
 		return;
 	}
-	
+
 	$description = "";
 	$keywords = "";
+	$thumbnailImageLink = "";
 	$metasArray = $parser->getMetatags();
 	foreach ($metasArray as $meta) {
 
@@ -133,17 +135,30 @@ function getDetails($url)
 		if ($meta->getAttribute("name") == "keywords") {
 			$keywords = $meta->getAttribute("content");
 		}
+
+		if ($meta->getAttribute("property") == "og:image") {
+			$thumbnailImageLink = $meta->getAttribute("content");
+		}
+	}
+	if ($thumbnailImageLink == "") {
+		$linksArray = $parser->getLinkTags();
+		foreach ($linksArray as $link) {
+			if ($link->getAttribute("rel") == "preload" && $link->getAttribute("as") == "image") {
+				$thumbnailImageLink = $link->getAttribute("href");
+				break;
+			}
+		}
 	}
 	$description = str_replace("\n", "", $description);
 	$keywords = str_replace("\n", "", $keywords);
-	
+
 	// Insert the sites
 	if (linkExists($url)) {
-		fwrite( $stdout, "$url already exists\n" );
-	}else if (insertLink($url, $siteTitle, $description, $keywords)) {
-		fwrite( $stdout,"SUCCESS(sites) : $url\n" );
+		fwrite($stdout, "$url already exists\n");
+	} else if (insertLink($url, $siteTitle, $description, $keywords, $thumbnailImageLink)) {
+		fwrite($stdout, "SUCCESS(sites) : $url\n");
 	} else {
-		fwrite( $stdout,"ERROR(sites): Failed to insert $url\n" );
+		fwrite($stdout, "ERROR(sites): Failed to insert $url\n");
 	}
 
 	// Get the Image
@@ -159,23 +174,23 @@ function getDetails($url)
 		}
 		$src = createLink($src, $url);
 		$info = getimagesize($src);
-		if($info[0] < 500 && $info[1] < 500){
+		if ($info[0] < 500 && $info[1] < 500) {
 			fwrite($stdout, "ERROR(images): Image attributes don\'t match the criteria INFO($info[3])\n");
 			continue;
 		}
 		$mimeType = $info["mime"];
-		if($mimeType !== "image/jpeg" ){
+		if ($mimeType !== "image/jpeg") {
 			fwrite($stdout, "ERROR(images): Image extension is not jpeg INFO($mimeType)\n");
 			continue;
 		}
 		if (!in_array($src, $alreadyFoundImages)) {
 			$alreadyFoundImages[] = $src;
-			if(insertImage($url, $src, $alt, $title)){
-				fwrite( $stdout,"SUCCESS(images) : $src\n" );
-			}else {
+			if (insertImage($url, $src, $alt, $title)) {
+				fwrite($stdout, "SUCCESS(images) : $src\n");
+			} else {
 				fwrite($stdout, "ERROR(images): Failed to insert $url\n");
 			}
-		}else {
+		} else {
 			fwrite($stdout, "ERROR(images): Already exists images $src\n");
 		}
 	}
@@ -188,7 +203,7 @@ function followLinks($url)
 	global $crawling;
 	global $stdout;
 	global $validateLinksForSites;
-	
+
 	$parser = new DomDocumentParser($url);
 	$linkList = $parser->getLinks();  /* NodeListはforeachで回せる */
 
@@ -202,10 +217,11 @@ function followLinks($url)
 			// Remove ? parameters from url
 			$href = strtok($href, "?");
 		}
-		
+
 		$href = createLink($href, $url); /*absolute path*/
-		if (!in_array($href, $alreadyCrawled) 
-		&& preg_match($validateLinksForSites, $href) === 1
+		if (
+			!in_array($href, $alreadyCrawled)
+			&& preg_match($validateLinksForSites, $href) === 1
 		) {
 			$alreadyCrawled[] = $href;
 			$crawling[] = $href;
@@ -224,5 +240,5 @@ $startUrl = $_POST["crawlSite"];
 // $startUrl = "https://onefootball.com/en/home";
 
 followLinks($startUrl);
-fwrite($stdout,"グローリング終了\n");
+fwrite($stdout, "グローリング終了\n");
 exit(0);

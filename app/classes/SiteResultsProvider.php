@@ -25,7 +25,7 @@ class SiteResultsProvider
         //page 1 : (1 - 1) * 20 :0
         //page 2 : (2 - 1) * 20 :20
         //page 3 : (3 - 1) * 20 :40
-        if($order === 'random'){
+        if ($order === 'random') {
             $order = 'RAND()';
         }
 
@@ -34,7 +34,7 @@ class SiteResultsProvider
                                         OR url LIKE :term 
                                         OR keywords LIKE :term 
                                         OR description LIKE :term
-                                        ORDER BY $order DESC , created_at DESC
+                                        ORDER BY created_at DESC ,$order DESC
                                         LIMIT :fromLimit, :pageSize");
         $searchTerm = "%" . $term . "%";
         $query->bindParam(":term", $searchTerm);
@@ -50,21 +50,37 @@ class SiteResultsProvider
             $url = $row["url"];
             $title = $row["title"];
             $description = $row["description"];
+            $thumbnailImage = $row["thumbnailImageLink"];
             $created_at = $row["created_at"];
             $title = $this->trimField($title, 55);
             $description = $this->trimField($description, 230);
 
-
-            $resultsHtml .= "<div class='resultContainer'>
-                                <h3 class='title'>
-                                    <a class='result' href='$url' data-linkId='$id'>
-                                        $title
-                                    </a> 
-                                </h3>
-                                <span class='date'>$created_at</span>
-                                <span class='url'>$url</span>
-                                <span class='description'>$description</span>
-                            </div>";
+            if ($thumbnailImage != "") {
+                $resultsHtml .= "<div class='resultContainer d-flex flex-row'>
+                                    <div style='width: 65%;'>
+                                        <h3 class='title'>
+                                            <a class='result' href='$url' data-linkId='$id'>
+                                                $title
+                                            </a> 
+                                        </h3>
+                                        <span class='date'>$created_at</span>
+                                        <span class='url'>$url</span>
+                                        <span class='description'>$description</span>
+                                    </div>
+                                    <img class='thumbnailImage' src='$thumbnailImage' style='width:240px; height: 130px; margin: 0 24px 0 12px;object-fit: cover;object-position: 10% 10%;'/>
+                                </div>";
+            } else {
+                $resultsHtml .= "<div class='resultContainer'>
+                                        <h3 class='title'>
+                                            <a class='result' href='$url' data-linkId='$id'>
+                                                $title
+                                            </a> 
+                                        </h3>
+                                        <span class='date'>$created_at</span>
+                                        <span class='url'>$url</span>
+                                        <span class='description'>$description</span>
+                                </div>";
+            }
         }
 
         $resultsHtml .= "</div>";
