@@ -32,7 +32,7 @@ function linkExists($url)
 	return $query->rowCount() != 0;
 }
 
-function insertLink($url, $title, $description, $keywords)
+function insertLink($url, $title, $description, $keywords, $thumbnailImageLink)
 {
 	global $con;
 	global $validateLinksForSites;
@@ -43,13 +43,14 @@ function insertLink($url, $title, $description, $keywords)
 		return false;
 	}
 
-	$query = $con->prepare("INSERT INTO sites(url, title, description, keywords)
-							VALUES(:url, :title, :description, :keywords)");
+	$query = $con->prepare("INSERT INTO sites(url, title, description, keywords, thumbnailImageLink)
+							VALUES(:url, :title, :description, :keywords ,:thumbnailImageLink)");
 
 	$query->bindParam(":url", $url);
 	$query->bindParam(":title", $title);
 	$query->bindParam(":description", $description);
 	$query->bindParam(":keywords", $keywords);
+	$query->bindParam(":thumbnailImageLink", $thumbnailImageLink);
 
 	return $query->execute();
 }
@@ -106,9 +107,10 @@ function getDetails($url)
 	if ($siteTitle == "") {
 		return;
 	}
-	
+
 	$description = "";
 	$keywords = "";
+	$thumbnailImageLink = "";
 	$metasArray = $parser->getMetatags();
 	foreach ($metasArray as $meta) {
 		if ($meta->getAttribute("name") == "description") {
@@ -117,14 +119,25 @@ function getDetails($url)
 		if ($meta->getAttribute("name") == "keywords") {
 			$keywords = $meta->getAttribute("content");
 		}
+		if ($meta->getAttribute("property") == "og:image") {
+			$thumbnailImageLink = $meta->getAttribute("content");
+		}
+	}
+	if ($thumbnailImageLink == "") {
+		$linksArray = $parser->getLinkTags();
+		foreach ($linksArray as $link) {
+			if ($link->getAttribute("rel") == "preload" && $link->getAttribute("as") == "image") {
+				$thumbnailImageLink = $link->getAttribute("href");
+				break;
+			}
+		}
 	}
 	$description = str_replace("\n", "", $description);
 	$keywords = str_replace("\n", "", $keywords);
-
 	if (linkExists($url)) {
-		fwrite( $stdout, "$url already exists\n" );
-	}else if (insertLink($url, $siteTitle, $description, $keywords)) {
-		fwrite( $stdout,"SUCCESS(sites) : $url\n" );
+		fwrite($stdout, "$url already exists\n");
+	} else if (insertLink($url, $siteTitle, $description, $keywords, $thumbnailImageLink)) {
+		fwrite($stdout, "SUCCESS(sites) : $url\n");
 	} else {
 		fwrite($stdout, "ERROR(sites): Failed to insert $url\n");
 	}
@@ -199,6 +212,6 @@ function followLinks($url)
 	}
 }
 $startUrl = $argv[1];
+followLinks($startUrl);
 fwrite($stdout, "グローリング終了\n");
-fwrite($stdout,"グローリング終了\n");
 exit(0);
