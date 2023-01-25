@@ -5,7 +5,7 @@ COPY ./app/composer.* /app/
 RUN composer install -n --prefer-dist
 COPY ./app /app
 
-FROM php:7.4-alpine
+FROM php:8-alpine
 
 # 設定ファイルを指定の場所に置く
 COPY dockerfiles/php.ini /usr/local/etc/php/php.ini
