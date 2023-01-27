@@ -27,16 +27,23 @@ class ImageResultsProvider
         //page 3 : (3 - 1) * 20 :40
 
         if ($order === 'random') {
-            $order = 'RAND()';
+            $query = $this->con->prepare("SELECT *
+                                            FROM images 
+                                            WHERE (title LIKE :term 
+                                            OR alt LIKE :term)
+                                            AND broken=0
+                                            ORDER BY RAND() DESC, created_at DESC
+                                            LIMIT :fromLimit, :pageSize");
+        } else {
+            $query = $this->con->prepare("SELECT *
+                                            FROM images 
+                                            WHERE (title LIKE :term 
+                                            OR alt LIKE :term)
+                                            AND broken=0
+                                            ORDER BY  created_at DESC, $order DESC
+                                            LIMIT :fromLimit, :pageSize");
         }
 
-        $query = $this->con->prepare("SELECT *
-                                        FROM images 
-                                        WHERE (title LIKE :term 
-                                        OR alt LIKE :term)
-                                        AND broken=0
-                                        ORDER BY  created_at DESC, $order  DESC
-                                        LIMIT :fromLimit, :pageSize");
         $searchTerm = "%" . $term . "%";
         $query->bindParam(":term", $searchTerm);
         $query->bindParam(":fromLimit", $fromLimit, PDO::PARAM_INT); /*デフォルトだとstr */
