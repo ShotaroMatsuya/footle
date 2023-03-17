@@ -37,7 +37,7 @@ jobs:
           name: Install Snyk
           command: |
             echo Install Snyk
-            curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.210.0/snyk-linux"
+            curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.996.0/snyk-linux"
             chmod -R +x ./snyk
             ./snyk config set api="${SNYK_AUTH_TOKEN}"
             echo Build client and backend docker images for testing...
