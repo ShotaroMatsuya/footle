@@ -6,16 +6,16 @@ require_once("classes/ImageResultsProvider.php");
 
 
 if (isset($_GET["term"])) {
-  $term = $_GET["term"];
+  $term = htmlspecialchars($_GET["term"]);
 } else {
   exit("You must enter a search term");
 }
-$type = isset($_GET["type"]) ? $_GET["type"] : "sites";
-$page = isset($_GET["page"]) ? $_GET["page"] : 1;
-$order = isset($_GET["order"]) ? $_GET["order"] : "clicks";
+$type = isset($_GET["type"]) ? htmlspecialchars($_GET["type"]) : "sites";
+$page = isset($_GET["page"]) ? htmlspecialchars($_GET["page"]) : 1;
+$order = isset($_GET["order"]) ? htmlspecialchars($_GET["order"]) : "clicks";
 $isRand = $order === 'random';
 
-$num = isset($_GET["num"]) ? $_GET["num"] : 30;
+$num = isset($_GET["num"]) ? htmlspecialchars($_GET["num"]) : 30;
 
 ?>
 
