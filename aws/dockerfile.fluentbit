@@ -1,4 +1,4 @@
-FROM amazon/aws-for-fluent-bit:2.31.10
+FROM amazon/aws-for-fluent-bit:2.31.11
 
 COPY ./aws/fluent-bit-custom.conf /fluent-bit/custom.conf
 COPY ./aws/myparsers.conf /fluent-bit/myparsers.conf
