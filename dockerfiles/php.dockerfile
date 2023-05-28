@@ -11,7 +11,7 @@ COPY dockerfiles/php.ini /usr/local/etc/php/php.ini
 COPY dockerfiles/zzz-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
 
 # xdebugインストール
-RUN apk add autoconf build-base \
+RUN apk add autoconf build-base linux-headers \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug
 RUN docker-php-ext-install pdo pdo_mysql
