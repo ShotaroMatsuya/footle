@@ -70,15 +70,26 @@ $(document).ready(function () {
   var searchArr = location.search ? location.search.substr(1).split('&') : [];
   console.log(searchArr);
 
-  $('#random-toggle').on('click', function () {
-    if (!$(this).hasClass('active')) {
-      $(this).addClass('active');
-      var urlParams = setParam(searchArr, 'order', 'random');
-      window.location.href = '/search.php?' + urlParams;
+  $("#random-toggle").on("click", function () {
+    if (!$(this).hasClass("active")) {
+      $(this).addClass("active");
+      var urlParams = setParam(searchArr, "order", "random");
+      window.location.href = "/search.php?" + urlParams;
     } else {
-      $(this).removeClass('active');
-      var urlParams = setParam(searchArr, 'order', 'clicks');
-      window.location.href = '/search.php?' + urlParams;
+      $(this).removeClass("active");
+      var urlParams = setParam(searchArr, "order", "latest");
+      window.location.href = "/search.php?" + urlParams;
+    }
+  });
+  $("#clicks-toggle").on("click", function () {
+    if (!$(this).hasClass("active")) {
+      $(this).addClass("active");
+      var urlParams = setParam(searchArr, "order", "clicks");
+      window.location.href = "/search.php?" + urlParams;
+    } else {
+      $(this).removeClass("active");
+      var urlParams = setParam(searchArr, "order", "latest");
+      window.location.href = "/search.php?" + urlParams;
     }
   });
   var num = '';
