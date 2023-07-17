@@ -12,10 +12,11 @@ if (isset($_GET["term"])) {
 }
 $type = isset($_GET["type"]) ? htmlspecialchars($_GET["type"]) : "sites";
 $page = isset($_GET["page"]) ? htmlspecialchars($_GET["page"]) : 1;
-$order = isset($_GET["order"]) ? htmlspecialchars($_GET["order"]) : "clicks";
+$order = isset($_GET["order"]) && ($_GET["order"] === 'random' || $_GET["order"] === 'clicks') ? htmlspecialchars($_GET["order"]) : "latest";
 $isRand = $order === 'random';
+$isClicks = $order === 'clicks';
 
-$num = isset($_GET["num"]) ? htmlspecialchars($_GET["num"]) : 30;
+$num = isset($_GET["num"]) && is_numeric($_GET["num"]) ? htmlspecialchars($_GET["num"]) : 30;
 
 ?>
 
@@ -27,6 +28,7 @@ $num = isset($_GET["num"]) ? htmlspecialchars($_GET["num"]) : 30;
   <title>Welcome to Footle</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" />
@@ -88,17 +90,17 @@ $num = isset($_GET["num"]) ? htmlspecialchars($_GET["num"]) : 30;
             <a href='<?php echo "search.php?term=$term&type=wiki&order=$order&num=$num"; ?>'>Wikipedia</a>
           </li>
           <?php
-          if ($order === 'random' && ($type === 'sites' || $type === 'images')) {
+          if ($type === 'sites' || $type === 'images') {
           ?>
             <li>
-              <button type="button" id="random-toggle" class="btn btn-outline-danger active" style="padding: revert;"><span class="material-icons" style="line-height: unset;">shuffle</span></button>
+              <button type="button" id="random-toggle" class="btn btn-outline-danger <?= $isRand ? 'active' : '' ?>" style="padding: revert;"><span class="material-icons" style="line-height: unset;">shuffle</span></button>
             </li>
-          <?php
-          } elseif ($order === 'clicks' && $type === 'sites' || $type === 'images') {
-          ?>
             <li>
-              <button type="button" id="random-toggle" class="btn btn-outline-danger" style="padding: revert;"><span class="material-icons" style="line-height: unset;">shuffle</span></button>
+              <button type="button" id="clicks-toggle" class="btn btn-outline-success <?= $isClicks ? 'active' : '' ?>" style="padding: revert;"><span class="material-symbols-outlined"  style="line-height: unset;">ads_click</span>
+              </button>
             </li>
+          
+
           <?php } ?>
           <?php if ($type === 'sites' || $type === 'images') { ?>
             <li>

@@ -7,3 +7,6 @@ TODO
 .dccache
 env/mysql.yaml
 startup-copy.sh
+
+# BackUp files
+recovery*
