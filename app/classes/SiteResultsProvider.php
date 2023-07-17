@@ -33,13 +33,21 @@ class SiteResultsProvider
                                             OR description LIKE :term
                                             ORDER BY RAND() DESC ,created_at DESC
                                             LIMIT :fromLimit, :pageSize");
-        } else {
+        } elseif ($order === 'clicks'){
             $query = $this->con->prepare("SELECT * 
                                             FROM sites WHERE title LIKE :term 
                                             OR url LIKE :term 
                                             OR keywords LIKE :term 
                                             OR description LIKE :term
-                                            ORDER BY created_at DESC ,$order DESC
+                                            ORDER BY clicks DESC ,created_at DESC
+                                            LIMIT :fromLimit, :pageSize");
+        }else {
+            $query = $this->con->prepare("SELECT * 
+                                            FROM sites WHERE title LIKE :term 
+                                            OR url LIKE :term 
+                                            OR keywords LIKE :term 
+                                            OR description LIKE :term
+                                            ORDER BY created_at DESC ,clicks DESC
                                             LIMIT :fromLimit, :pageSize");
         }
 

@@ -34,13 +34,22 @@ class ImageResultsProvider
                                             AND broken=0
                                             ORDER BY RAND() DESC, created_at DESC
                                             LIMIT :fromLimit, :pageSize");
+        } elseif ($order === 'clicks') {
+            $query = $this->con->prepare("SELECT *
+                                            FROM images 
+                                            WHERE (title LIKE :term 
+                                            OR alt LIKE :term)
+                                            AND broken=0
+                                            ORDER BY clicks DESC, created_at DESC  
+                                            LIMIT :fromLimit, :pageSize");
+            
         } else {
             $query = $this->con->prepare("SELECT *
                                             FROM images 
                                             WHERE (title LIKE :term 
                                             OR alt LIKE :term)
                                             AND broken=0
-                                            ORDER BY  created_at DESC, $order DESC
+                                            ORDER BY created_at DESC, clicks DESC
                                             LIMIT :fromLimit, :pageSize");
         }
 
