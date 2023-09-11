@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/mysql:8.0.33
+FROM public.ecr.aws/docker/library/mysql:8.1.0
 
 COPY dockerfiles/initdb.d/* /docker-entrypoint-initdb.d/
 RUN chown -R mysql.mysql /var/lib/mysql
